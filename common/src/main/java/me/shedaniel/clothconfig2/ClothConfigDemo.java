@@ -35,12 +35,13 @@ import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -206,12 +207,18 @@ public class ClothConfigDemo {
        
         testing.addEntry(entryBuilder.startTextDescription(
                 Component.translatable("text.cloth-config.testing.1",
-                        Component.literal("ClothConfig").withStyle(s -> s.withBold(true).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(Util.make(new ItemStack(Items.PINK_WOOL), stack -> {
+                        Component.literal("ClothConfig").withStyle(s -> s.withBold(true).withHoverEvent(new HoverEvent.ShowItem(Util.make(new ItemStack(Items.PINK_WOOL), stack -> {
                             stack.set(DataComponents.CUSTOM_NAME, Component.literal("(\u30FB\u2200\u30FB)"));
                             stack.enchant(VanillaRegistries.createLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.EFFICIENCY), 10);
-                        }))))),
-                        Component.translatable("text.cloth-config.testing.2").withStyle(s -> s.withColor(ChatFormatting.BLUE).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("https://shedaniel.gitbook.io/cloth-config/"))).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://shedaniel.gitbook.io/cloth-config/"))),
-                        Component.translatable("text.cloth-config.testing.3").withStyle(s -> s.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Utils.getConfigFolder().getParent().resolve("options.txt").toString())))
+                        })))),
+                        Component.translatable("text.cloth-config.testing.2").withStyle(s -> {
+                            try {
+                                return s.withColor(ChatFormatting.BLUE).withHoverEvent(new HoverEvent.ShowText(Component.literal("https://shedaniel.gitbook.io/cloth-config/"))).withClickEvent(new ClickEvent.OpenUrl(new URI("https://shedaniel.gitbook.io/cloth-config/")));
+                            } catch (URISyntaxException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }),
+                        Component.translatable("text.cloth-config.testing.3").withStyle(s -> s.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent.OpenFile(Utils.getConfigFolder().getParent().resolve("options.txt").toString())))
                 )
         ).build());
         builder.transparentBackground();

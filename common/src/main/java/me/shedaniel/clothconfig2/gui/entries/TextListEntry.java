@@ -95,7 +95,7 @@ public class TextListEntry extends TooltipListEntry<Object> {
         AbstractConfigScreen configScreen = this.getConfigScreen();
         
         if (style != null && configScreen != null) {
-            if (Minecraft.getInstance().level == null && style.getHoverEvent() != null && style.getHoverEvent().getAction() == HoverEvent.Action.SHOW_ITEM) {
+            if (Minecraft.getInstance().level == null && style.getHoverEvent() != null && style.getHoverEvent().action() == HoverEvent.Action.SHOW_ITEM) {
                 return;
             }
             

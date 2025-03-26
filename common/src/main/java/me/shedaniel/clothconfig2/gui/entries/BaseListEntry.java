@@ -285,7 +285,6 @@ public abstract class BaseListEntry<T, C extends BaseListCell, SELF extends Base
     @Override
     public void render(GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
         super.render(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
-        RenderSystem.setShaderTexture(0, CONFIG_TEX);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         BaseListCell focused = !isExpanded() || getFocused() == null || !(getFocused() instanceof BaseListCell) ? null : (BaseListCell) getFocused();
         boolean insideLabel = labelWidget.rectangle.contains(mouseX, mouseY);

@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import me.shedaniel.clothconfig2.ClothConfigInitializer;
 import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.KeyCodeEntry;
 import me.shedaniel.math.Rectangle;
@@ -45,9 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -383,28 +380,14 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
         
         ClickEvent clickEvent = style.getClickEvent();
         
-        if (clickEvent != null && clickEvent.getAction() == ClickEvent.Action.OPEN_URL) {
-            try {
-                URI uri = new URI(clickEvent.getValue());
-                String string = uri.getScheme();
-                if (string == null) {
-                    throw new URISyntaxException(clickEvent.getValue(), "Missing protocol");
+        if (clickEvent instanceof ClickEvent.OpenUrl(URI uri)) {
+            Minecraft.getInstance().setScreen(new ConfirmLinkScreen(openInBrowser -> {
+                if (openInBrowser) {
+                    Util.getPlatform().openUri(uri);
                 }
                 
-                if (!(string.equalsIgnoreCase("http") || string.equalsIgnoreCase("https"))) {
-                    throw new URISyntaxException(clickEvent.getValue(), "Unsupported protocol: " + string.toLowerCase(Locale.ROOT));
-                }
-                
-                Minecraft.getInstance().setScreen(new ConfirmLinkScreen(openInBrowser -> {
-                    if (openInBrowser) {
-                        Util.getPlatform().openUri(uri);
-                    }
-                    
-                    Minecraft.getInstance().setScreen(this);
-                }, clickEvent.getValue(), true));
-            } catch (URISyntaxException e) {
-                ClothConfigInitializer.LOGGER.error("Can't open url for {}", clickEvent, e);
-            }
+                Minecraft.getInstance().setScreen(this);
+            }, uri.toString(), true));
             return true;
         }
         return super.handleComponentClicked(style);

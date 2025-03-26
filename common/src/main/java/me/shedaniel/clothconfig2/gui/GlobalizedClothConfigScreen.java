@@ -21,7 +21,6 @@ package me.shedaniel.clothconfig2.gui;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import me.shedaniel.clothconfig2.CCTextures;
 import me.shedaniel.clothconfig2.ClothConfigInitializer;
@@ -33,7 +32,6 @@ import me.shedaniel.math.Rectangle;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -236,14 +234,12 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
         sideSlider.updatePosition(delta);
         sideScroller.updatePosition(delta);
         if (isTransparentBackground()) {
-            RenderSystem.enableBlend();
             graphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition, height, sliderPosition, height, 32, 32);
             graphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32);
             graphics.blit(RenderType::guiTextured, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
             if (sliderPosition - 14 - 1 > 0) {
                 graphics.blit(RenderType::guiTextured, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 14 - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
             }
-            RenderSystem.disableBlend();
         } else {
             graphics.drawSpecial(source -> {
                 VertexConsumer buffer = source.getBuffer(RenderType.guiTextured(getBackgroundLocation()));
@@ -259,8 +255,6 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
                 buffer.addVertex(matrix, sliderPosition - 14, 0, 0.0F).setUv((sliderPosition - 14) / 32.0F, sideScroller.scrollAmountInt() / 32.0F).setColor(32, 32, 32, 255);
                 buffer.addVertex(matrix, 0, 0, 0.0F).setUv(0, sideScroller.scrollAmountInt() / 32.0F).setColor(32, 32, 32, 255);
                 
-                RenderSystem.enableBlend();
-                RenderSystem.defaultBlendFunc();
                 int shadeColor = isTransparentBackground() ? 120 : 160;
                 buffer = source.getBuffer(RenderType.gui());
                 buffer.addVertex(matrix, sliderPosition + 4, 0, 100.0F).setColor(0, 0, 0, 0);
@@ -272,7 +266,6 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
                 buffer.addVertex(matrix, sliderPosition - 14 - 4, 0, 100.0F).setColor(0, 0, 0, 0);
                 buffer.addVertex(matrix, sliderPosition - 14 - 4, height, 100.0F).setColor(0, 0, 0, 0);
                 buffer.addVertex(matrix, sliderPosition - 14, height, 100.0F).setColor(0, 0, 0, shadeColor);
-                RenderSystem.disableBlend();
             });
         }
         Rectangle slideArrowBounds = new Rectangle(sliderPosition - 14, 0, 14, height);

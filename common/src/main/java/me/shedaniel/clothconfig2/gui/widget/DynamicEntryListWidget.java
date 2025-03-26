@@ -310,20 +310,16 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
         graphics.enableScissor(left, top, left + width, bottom);
         this.renderList(graphics, rowLeft, startY, mouseX, mouseY, delta);
         graphics.disableScissor();
-        RenderSystem.disableDepthTest();
         this.renderHoleBackground(graphics, 0, this.top, 255, 255);
         this.renderHoleBackground(graphics, this.bottom, this.height, 255, 255);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.enableBlend();
         graphics.blit(RenderType::guiTextured, Screen.HEADER_SEPARATOR, this.left, this.top - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
         graphics.blit(RenderType::guiTextured, Screen.FOOTER_SEPARATOR, this.left, this.bottom, 0.0F, 0.0F, this.width, 2, 32, 2);
-        RenderSystem.disableBlend();
         
         int maxScroll = this.getMaxScroll();
         renderScrollBar(graphics, maxScroll, scrollbarPosition, int_4);
         
         this.renderDecorations(graphics, mouseX, mouseY);
-        RenderSystem.disableBlend();
     }
     
     protected void renderScrollBar(GuiGraphics graphics, int maxScroll, int scrollbarPositionMinX, int scrollbarPositionMaxX) {

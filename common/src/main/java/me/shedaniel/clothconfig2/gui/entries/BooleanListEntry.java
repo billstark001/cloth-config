@@ -103,11 +103,11 @@ public class BooleanListEntry extends TooltipListEntry<Boolean> {
         this.buttonWidget.setMessage(getYesNoText(bool.get()));
         Component displayedFieldName = getDisplayedFieldName();
         if (Minecraft.getInstance().font.isBidirectional()) {
-            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, 16777215);
+            graphics.drawString(Minecraft.getInstance().font, displayedFieldName, window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, 0xffffffff);
             this.resetButton.setX(x);
             this.buttonWidget.setX(x + resetButton.getWidth() + 2);
         } else {
-            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), x, y + 6, getPreferredTextColor());
+            graphics.drawString(Minecraft.getInstance().font, displayedFieldName, x, y + 6, getPreferredTextColor());
             this.resetButton.setX(x + entryWidth - resetButton.getWidth());
             this.buttonWidget.setX(x + entryWidth - 150);
         }

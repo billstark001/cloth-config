@@ -21,11 +21,11 @@ package me.shedaniel.clothconfig2.gui;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import me.shedaniel.clothconfig2.api.*;
+import me.shedaniel.clothconfig2.api.AbstractConfigEntry;
+import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.Tooltip;
 import me.shedaniel.clothconfig2.api.animator.ValueAnimator;
 import me.shedaniel.clothconfig2.api.scroll.ScrollingContainer;
 import me.shedaniel.clothconfig2.gui.entries.EmptyEntry;
@@ -40,9 +40,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -162,7 +160,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             childrenL().add(buttonLeftTab = new Button(4, 44, 12, 18, Component.empty(), button -> tabsScroller.scrollTo(0, true), Supplier::get) {
                 @Override
                 public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-                    graphics.blit(RenderType::guiTextured, CONFIG_TEX, getX(), getY(), 12, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
+                    graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, getX(), getY(), 12, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
                 }
             });
             int j = 0;
@@ -174,7 +172,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             childrenL().add(buttonRightTab = new Button(width - 16, 44, 12, 18, Component.empty(), button -> tabsScroller.scrollTo(tabsScroller.getMaxScroll(), true), Supplier::get) {
                 @Override
                 public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-                    graphics.blit(RenderType::guiTextured, CONFIG_TEX, getX(), getY(), 0, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
+                    graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, getX(), getY(), 0, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
                 }
             });
         } else {
@@ -228,7 +226,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             if (this.minecraft.level == null) {
                 this.renderPanorama(graphics, delta);
             }
-            renderBlurredBackground();
+            renderBlurredBackground(graphics);
             renderMenuBackground(graphics);
         }
         listWidget.render(graphics, mouseX, mouseY, delta);
@@ -240,10 +238,11 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             graphics.drawCenteredString(minecraft.font, title, width / 2, 18, -1);
             Rectangle onlyInnerTabBounds = new Rectangle(tabsBounds.x + 20, tabsBounds.y, tabsBounds.width - 40, tabsBounds.height);
             graphics.enableScissor(onlyInnerTabBounds.x, onlyInnerTabBounds.y, onlyInnerTabBounds.getMaxX(), onlyInnerTabBounds.getMaxY());
-            if (isTransparentBackground())
+            if (isTransparentBackground()) {
                 graphics.fillGradient(onlyInnerTabBounds.x, onlyInnerTabBounds.y, onlyInnerTabBounds.getMaxX(), onlyInnerTabBounds.getMaxY(), 0x68000000, 0x68000000);
-            else
-                overlayBackground(graphics, onlyInnerTabBounds, 32, 32, 32, 255, 255);
+            } else {
+                overlayBackground(graphics, onlyInnerTabBounds, 32, 32, 32, 255);
+            }
             tabButtons.forEach(widget -> widget.render(graphics, mouseX, mouseY, delta));
             drawTabsShades(graphics, 0, isTransparentBackground() ? 120 : 255);
             graphics.disableScissor();
@@ -264,7 +263,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
                     int stringWidth = minecraft.font.width(text);
                     graphics.fillGradient(8, 9, 20 + stringWidth, 14 + minecraft.font.lineHeight, 0x68000000, 0x68000000);
                 }
-                graphics.blit(RenderType::guiTextured, CONFIG_TEX, 10, 10, 0, 54, 3, 11, 256, 256);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, 10, 10, 0, 54, 3, 11, 256, 256);
                 graphics.drawString(minecraft.font, text, 18, 12, -1);
                 if (errors.size() > 1) {
                     int stringWidth = minecraft.font.width(text);
@@ -278,7 +277,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
                 int stringWidth = minecraft.font.width(text);
                 graphics.fillGradient(8, 9, 20 + stringWidth, 14 + minecraft.font.lineHeight, 0x68000000, 0x68000000);
             }
-            graphics.blit(RenderType::guiTextured, CONFIG_TEX, 10, 10, 0, 54, 3, 11, 256, 256);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, 10, 10, 0, 54, 3, 11, 256, 256);
             graphics.drawString(minecraft.font, text, 18, 12, -1);
         }
         super.render(graphics, mouseX, mouseY, delta);
@@ -289,21 +288,8 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
     }
     
     private void drawTabsShades(GuiGraphics graphics, int lightColor, int darkColor) {
-        graphics.drawSpecial(source -> {
-            drawTabsShades(source, graphics.pose().last().pose(), lightColor, darkColor);
-        });
-    }
-    
-    private void drawTabsShades(MultiBufferSource source, Matrix4f matrix, int lightColor, int darkColor) {
-        VertexConsumer buffer = source.getBuffer(RenderType.gui());
-        buffer.addVertex(matrix, tabsBounds.getMinX() + 20, tabsBounds.getMinY() + 4, 0.0F).setUv(0, 1f).setColor(0, 0, 0, lightColor);
-        buffer.addVertex(matrix, tabsBounds.getMaxX() - 20, tabsBounds.getMinY() + 4, 0.0F).setUv(1f, 1f).setColor(0, 0, 0, lightColor);
-        buffer.addVertex(matrix, tabsBounds.getMaxX() - 20, tabsBounds.getMinY(), 0.0F).setUv(1f, 0).setColor(0, 0, 0, darkColor);
-        buffer.addVertex(matrix, tabsBounds.getMinX() + 20, tabsBounds.getMinY(), 0.0F).setUv(0, 0).setColor(0, 0, 0, darkColor);
-        buffer.addVertex(matrix, tabsBounds.getMinX() + 20, tabsBounds.getMaxY(), 0.0F).setUv(0, 1f).setColor(0, 0, 0, darkColor);
-        buffer.addVertex(matrix, tabsBounds.getMaxX() - 20, tabsBounds.getMaxY(), 0.0F).setUv(1f, 1f).setColor(0, 0, 0, darkColor);
-        buffer.addVertex(matrix, tabsBounds.getMaxX() - 20, tabsBounds.getMaxY() - 4, 0.0F).setUv(1f, 0).setColor(0, 0, 0, lightColor);
-        buffer.addVertex(matrix, tabsBounds.getMinX() + 20, tabsBounds.getMaxY() - 4, 0.0F).setUv(0, 0).setColor(0, 0, 0, lightColor);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Screen.HEADER_SEPARATOR, tabsBounds.getMinX() - 20, tabsBounds.getMinY() - 2, 0.0F, 0.0F, tabsBounds.getWidth() + 40, 2, 32, 2);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Screen.FOOTER_SEPARATOR, tabsBounds.getMinX() - 20, tabsBounds.getMaxY(), 0.0F, 0.0F, tabsBounds.getWidth() + 40, 2, 32, 2);
     }
     
     @Override

@@ -128,7 +128,7 @@ public class KeyCodeEntry extends TooltipListEntry<ModifierKeyCode> {
             this.buttonWidget.setMessage(Component.literal("> ").withStyle(ChatFormatting.WHITE).append(this.buttonWidget.getMessage().plainCopy().withStyle(ChatFormatting.YELLOW)).append(Component.literal(" <").withStyle(ChatFormatting.WHITE)));
         Component displayedFieldName = getDisplayedFieldName();
         if (Minecraft.getInstance().font.isBidirectional()) {
-            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, 16777215);
+            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, 0xffffffff);
             this.resetButton.setX(x);
             this.buttonWidget.setX(x + resetButton.getWidth() + 2);
         } else {

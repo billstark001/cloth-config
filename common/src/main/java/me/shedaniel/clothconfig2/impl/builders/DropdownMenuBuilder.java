@@ -384,7 +384,7 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
                             boolean b = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
                             if (b)
                                 graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, -15132391);
-                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 16777215 : 8947848);
+                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 0xffffffff : 0xff888888);
                             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                             graphics.renderItem(s, x + 4, y + 2);
                         }
@@ -433,7 +433,7 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
                             boolean b = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
                             if (b)
                                 graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, -15132391);
-                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 16777215 : 8947848);
+                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 0xffffffff : 0xff888888);
                             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                             graphics.renderItem(s, x + 4, y + 2);
                         }
@@ -481,7 +481,7 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
                             boolean b = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
                             if (b)
                                 graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, -15132391);
-                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 16777215 : 8947848);
+                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 0xffffffff : 0xff888888);
                             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                             graphics.renderItem(s, x + 4, y + 2);
                         }
@@ -529,7 +529,7 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
                             boolean b = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
                             if (b)
                                 graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, -15132391);
-                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 16777215 : 8947848);
+                            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6 + 18, y + 6, b ? 0xffffffff : 0xff888888);
                             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                             graphics.renderItem(s, x + 4, y + 2);
                         }

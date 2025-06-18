@@ -34,7 +34,7 @@ public abstract class BaseListCell extends AbstractContainerEventHandler impleme
     private Supplier<Optional<Component>> errorSupplier;
     
     public final int getPreferredTextColor() {
-        return getConfigError().isPresent() ? 16733525 : 14737632;
+        return getConfigError().isPresent() ? 0xffff5555 : 0xffe0e0e0;
     }
     
     public final Optional<Component> getConfigError() {

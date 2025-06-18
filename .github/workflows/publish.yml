@@ -25,6 +25,7 @@ on:
             - v16
             - v17
             - v18
+            - v19
 
 jobs:
     build:

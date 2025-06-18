@@ -21,10 +21,10 @@ package me.shedaniel.clothconfig2.gui;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.KeyCodeEntry;
+import me.shedaniel.math.Color;
 import me.shedaniel.math.Rectangle;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -34,14 +34,13 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 
 import java.net.URI;
 import java.util.List;
@@ -352,7 +351,7 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         super.render(graphics, mouseX, mouseY, delta);
         for (Tooltip tooltip : tooltips) {
-            graphics.renderTooltip(Minecraft.getInstance().font, tooltip.getText(), tooltip.getX(), tooltip.getY());
+            graphics.setTooltipForNextFrame(Minecraft.getInstance().font, tooltip.getText(), tooltip.getX(), tooltip.getY());
         }
         this.tooltips.clear();
     }
@@ -363,15 +362,8 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
     }
     
     @Deprecated
-    protected void overlayBackground(GuiGraphics graphics, Rectangle rect, int red, int green, int blue, int startAlpha, int endAlpha) {
-        graphics.drawSpecial(source -> {
-            VertexConsumer buffer = source.getBuffer(RenderType.guiTextured(getBackgroundLocation()));
-            Matrix4f matrix = graphics.pose().last().pose();
-            buffer.addVertex(matrix, rect.getMinX(), rect.getMaxY(), 0.0F).setUv(rect.getMinX() / 32.0F, rect.getMaxY() / 32.0F).setColor(red, green, blue, endAlpha);
-            buffer.addVertex(matrix, rect.getMaxX(), rect.getMaxY(), 0.0F).setUv(rect.getMaxX() / 32.0F, rect.getMaxY() / 32.0F).setColor(red, green, blue, endAlpha);
-            buffer.addVertex(matrix, rect.getMaxX(), rect.getMinY(), 0.0F).setUv(rect.getMaxX() / 32.0F, rect.getMinY() / 32.0F).setColor(red, green, blue, startAlpha);
-            buffer.addVertex(matrix, rect.getMinX(), rect.getMinY(), 0.0F).setUv(rect.getMinX() / 32.0F, rect.getMinY() / 32.0F).setColor(red, green, blue, startAlpha);
-        });
+    protected void overlayBackground(GuiGraphics graphics, Rectangle rect, int red, int green, int blue, int alpha) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundLocation(), rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY(), rect.getWidth(), rect.getHeight(), rect.getWidth(), rect.getHeight(), 32, 32, Color.ofRGBA(red, green, blue, alpha).getColor());
     }
     
     @Override

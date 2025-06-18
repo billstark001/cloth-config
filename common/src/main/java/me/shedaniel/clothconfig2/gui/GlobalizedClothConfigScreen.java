@@ -39,6 +39,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -210,12 +211,12 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
         if (!isTransparentBackground()) {
             graphics.enableScissor(sliderPosition, 0, width, height);
             renderMenuBackground(graphics);
-            overlayBackground(graphics, new Rectangle(14, 0, width, height), 64, 64, 64, 255, 255);
+            overlayBackground(graphics, new Rectangle(14, 0, width, height), 64, 64, 64, 255);
         } else {
             if (this.minecraft.level == null) {
                 this.renderPanorama(graphics, delta);
             }
-            renderBlurredBackground();
+            renderBlurredBackground(graphics);
             renderMenuBackground(graphics);
             graphics.enableScissor(sliderPosition, 0, width, height);
         }
@@ -234,43 +235,23 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
         sideSlider.updatePosition(delta);
         sideScroller.updatePosition(delta);
         if (isTransparentBackground()) {
-            graphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition, height, sliderPosition, height, 32, 32);
-            graphics.blit(RenderType::guiTextured, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32);
-            graphics.blit(RenderType::guiTextured, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition, height, sliderPosition, height, 32, 32);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
             if (sliderPosition - 14 - 1 > 0) {
-                graphics.blit(RenderType::guiTextured, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 14 - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 14 - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
             }
         } else {
-            graphics.drawSpecial(source -> {
-                VertexConsumer buffer = source.getBuffer(RenderType.guiTextured(getBackgroundLocation()));
-                Matrix4f matrix = graphics.pose().last().pose();
-                float f = 32.0F;
-                buffer.addVertex(matrix, sliderPosition - 14, height, 0.0F).setUv(0, height / 32.0F).setColor(68, 68, 68, 255);
-                buffer.addVertex(matrix, sliderPosition, height, 0.0F).setUv(14 / 32.0F, height / 32.0F).setColor(68, 68, 68, 255);
-                buffer.addVertex(matrix, sliderPosition, 0, 0.0F).setUv(14 / 32.0F, 0).setColor(68, 68, 68, 255);
-                buffer.addVertex(matrix, sliderPosition - 14, 0, 0.0F).setUv(0, 0).setColor(68, 68, 68, 255);
-                
-                buffer.addVertex(matrix, 0, height, 0.0F).setUv(0, (height + sideScroller.scrollAmountInt()) / 32.0F).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, sliderPosition - 14, height, 0.0F).setUv((sliderPosition - 14) / 32.0F, (height + sideScroller.scrollAmountInt()) / 32.0F).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, sliderPosition - 14, 0, 0.0F).setUv((sliderPosition - 14) / 32.0F, sideScroller.scrollAmountInt() / 32.0F).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, 0, 0, 0.0F).setUv(0, sideScroller.scrollAmountInt() / 32.0F).setColor(32, 32, 32, 255);
-                
-                int shadeColor = isTransparentBackground() ? 120 : 160;
-                buffer = source.getBuffer(RenderType.gui());
-                buffer.addVertex(matrix, sliderPosition + 4, 0, 100.0F).setColor(0, 0, 0, 0);
-                buffer.addVertex(matrix, sliderPosition, 0, 100.0F).setColor(0, 0, 0, shadeColor);
-                buffer.addVertex(matrix, sliderPosition, height, 100.0F).setColor(0, 0, 0, shadeColor);
-                buffer.addVertex(matrix, sliderPosition + 4, height, 100.0F).setColor(0, 0, 0, 0);
-                shadeColor /= 2;
-                buffer.addVertex(matrix, sliderPosition - 14, 0, 100.0F).setColor(0, 0, 0, shadeColor);
-                buffer.addVertex(matrix, sliderPosition - 14 - 4, 0, 100.0F).setColor(0, 0, 0, 0);
-                buffer.addVertex(matrix, sliderPosition - 14 - 4, height, 100.0F).setColor(0, 0, 0, 0);
-                buffer.addVertex(matrix, sliderPosition - 14, height, 100.0F).setColor(0, 0, 0, shadeColor);
-            });
+            graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundLocation(), 0, 0, sliderPosition, height, sliderPosition, height, sliderPosition, height, 32, 32, 0xFF444444);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundLocation(), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32, 0xFF202020);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
+            if (sliderPosition - 14 - 1 > 0) {
+                graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 14 - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
+            }
         }
         Rectangle slideArrowBounds = new Rectangle(sliderPosition - 14, 0, 14, height);
         {
-            int textColor = slideArrowBounds.contains(mouseX, mouseY) ? 16777120 : 16777215;
+            int textColor = slideArrowBounds.contains(mouseX, mouseY) ? 0xffffffa0 : 0xffffffff;
             if (Mth.ceil((1 - sideSlider.scrollAmount()) * 255.0F) >= 10) {
                 graphics.drawString(font, ">", Math.round(sliderPosition - 7 - font.width(">") / 2f), height / 2, textColor | Mth.clamp(Mth.ceil((1 - sideSlider.scrollAmount()) * 255.0F), 0, 255) << 24);
             }
@@ -283,13 +264,13 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
                 graphics.enableScissor(0, 0, sliderPosition - 14, height);
                 int scrollOffset = scrollerBounds.y - sideScroller.scrollAmountInt();
                 for (Reference reference : references) {
-                    graphics.pose().pushPose();
-                    graphics.pose().scale(reference.getScale(), reference.getScale(), reference.getScale());
+                    graphics.pose().pushMatrix();
+                    graphics.pose().scale(reference.getScale(), reference.getScale());
                     MutableComponent text = Component.literal(StringUtils.repeat("  ", reference.getIndent()) + "- ").append(reference.getText());
                     if (lastHoveredReference == null && new Rectangle(scrollerBounds.x, (int) (scrollOffset - 4 * reference.getScale()), (int) (font.width(text) * reference.getScale()), (int) ((font.lineHeight + 4) * reference.getScale())).contains(mouseX, mouseY))
                         lastHoveredReference = reference;
-                    graphics.drawString(font, text.getVisualOrderText(), scrollerBounds.x, scrollOffset, lastHoveredReference == reference ? 16769544 : 16777215, false);
-                    graphics.pose().popPose();
+                    graphics.drawString(font, text.getVisualOrderText(), scrollerBounds.x, scrollOffset, lastHoveredReference == reference ? 0xffffe208 : 0xffffffff, false);
+                    graphics.pose().popMatrix();
                     scrollOffset += (font.lineHeight + 3) * reference.getScale();
                 }
                 graphics.disableScissor();

@@ -109,7 +109,7 @@ public abstract class TextFieldListEntry<T> extends TooltipListEntry<T> {
     }
     
     protected void textFieldPreRender(EditBox widget) {
-        widget.setTextColor(getConfigError().isPresent() ? 0xff5555 : 0xe0e0e0);
+        widget.setTextColor(getConfigError().isPresent() ? 0xffff5555 : 0xffe0e0e0);
     }
     
     @Override
@@ -127,11 +127,11 @@ public abstract class TextFieldListEntry<T> extends TooltipListEntry<T> {
         this.textFieldWidget.setY(y + 1);
         Component displayedFieldName = getDisplayedFieldName();
         if (Minecraft.getInstance().font.isBidirectional()) {
-            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, getPreferredTextColor());
+            graphics.drawString(Minecraft.getInstance().font, displayedFieldName, window.getGuiScaledWidth() - x - Minecraft.getInstance().font.width(displayedFieldName), y + 6, getPreferredTextColor());
             this.resetButton.setX(x);
             this.textFieldWidget.setX(x + resetButton.getWidth());
         } else {
-            graphics.drawString(Minecraft.getInstance().font, displayedFieldName.getVisualOrderText(), x, y + 6, getPreferredTextColor());
+            graphics.drawString(Minecraft.getInstance().font, displayedFieldName, x, y + 6, getPreferredTextColor());
             this.resetButton.setX(x + entryWidth - resetButton.getWidth());
             this.textFieldWidget.setX(x + entryWidth - 148);
         }

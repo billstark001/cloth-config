@@ -29,7 +29,7 @@ import me.shedaniel.clothconfig2.gui.widget.DynamicEntryListWidget;
 import me.shedaniel.clothconfig2.impl.EasingMethod;
 import me.shedaniel.math.Rectangle;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
@@ -144,8 +144,8 @@ public abstract class ScrollingContainer {
             int minY = Math.min(Math.max((int) scrollAmount * (bounds.height - height) / maxScroll + bounds.y, bounds.y), bounds.getMaxY() - height);
             
             int scrollbarPositionMinX = getScrollBarX();
-            graphics.blitSprite(RenderType::guiTextured, SCROLLER_BACKGROUND_SPRITE, scrollbarPositionMinX, bounds.y, 6, bounds.height, background);
-            graphics.blitSprite(RenderType::guiTextured, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height, ARGB.white(alpha));
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, scrollbarPositionMinX, bounds.y, 6, bounds.height, background);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height, ARGB.white(alpha));
         }
     }
     

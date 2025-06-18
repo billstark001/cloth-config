@@ -20,8 +20,10 @@
 package me.shedaniel.clothconfig2.gui.widget;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import me.shedaniel.clothconfig2.api.DisableableWidget;
 import me.shedaniel.clothconfig2.api.HideableWidget;
 import me.shedaniel.clothconfig2.api.Requirement;
@@ -40,13 +42,12 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -277,18 +278,7 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
     
     @Deprecated
     protected void renderBackBackground(GuiGraphics graphics) {
-        if (this.backgroundLocation != null) {
-            graphics.drawSpecial(source -> {
-                VertexConsumer buffer = source.getBuffer(RenderType.guiTextured(backgroundLocation));
-                Matrix4f matrix = graphics.pose().last().pose();
-                buffer.addVertex(matrix, this.left, this.bottom, 0.0F).setUv(this.left / 32.0F, ((this.bottom + (int) this.getScroll()) / 32.0F)).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, this.right, this.bottom, 0.0F).setUv(this.right / 32.0F, ((this.bottom + (int) this.getScroll()) / 32.0F)).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, this.right, this.top, 0.0F).setUv(this.right / 32.0F, ((this.top + (int) this.getScroll()) / 32.0F)).setColor(32, 32, 32, 255);
-                buffer.addVertex(matrix, this.left, this.top, 0.0F).setUv(this.left / 32.0F, ((this.top + (int) this.getScroll()) / 32.0F)).setColor(32, 32, 32, 255);
-            });
-        } else {
-            graphics.blit(RenderType::guiTextured, Screen.MENU_BACKGROUND, this.left, this.top, this.right, this.bottom, this.width, this.bottom - this.top, 32, 32);
-        }
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Objects.requireNonNullElse(this.backgroundLocation, Screen.MENU_BACKGROUND), this.left, this.top, this.right, this.bottom, this.width, this.bottom - this.top, this.width, this.bottom - this.top, 32, 32, 0xFF202020);
     }
     
     @Override
@@ -312,9 +302,8 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
         graphics.disableScissor();
         this.renderHoleBackground(graphics, 0, this.top, 255, 255);
         this.renderHoleBackground(graphics, this.bottom, this.height, 255, 255);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        graphics.blit(RenderType::guiTextured, Screen.HEADER_SEPARATOR, this.left, this.top - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
-        graphics.blit(RenderType::guiTextured, Screen.FOOTER_SEPARATOR, this.left, this.bottom, 0.0F, 0.0F, this.width, 2, 32, 2);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Screen.HEADER_SEPARATOR, this.left, this.top - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Screen.FOOTER_SEPARATOR, this.left, this.bottom, 0.0F, 0.0F, this.width, 2, 32, 2);
         
         int maxScroll = this.getMaxScroll();
         renderScrollBar(graphics, maxScroll, scrollbarPosition, int_4);
@@ -331,8 +320,8 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
                 minY = this.top;
             }
             
-            graphics.blitSprite(RenderType::guiTextured, SCROLLER_BACKGROUND_SPRITE, scrollbarPositionMinX, this.top, scrollbarPositionMaxX - scrollbarPositionMinX, this.bottom - this.top);
-            graphics.blitSprite(RenderType::guiTextured, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, scrollbarPositionMinX, this.top, scrollbarPositionMaxX - scrollbarPositionMinX, this.bottom - this.top);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height);
         }
     }
     
@@ -600,14 +589,7 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
     
     protected void renderHoleBackground(GuiGraphics graphics, int y1, int y2, int alpha1, int alpha2) {
         if (backgroundLocation != null) {
-            graphics.drawSpecial(source -> {
-                VertexConsumer buffer = source.getBuffer(RenderType.guiTextured(backgroundLocation));
-                Matrix4f matrix = graphics.pose().last().pose();
-                buffer.addVertex(matrix, this.left, y2, 0.0F).setUv(0, ((float) y2 / 32.0F)).setColor(64, 64, 64, alpha2);
-                buffer.addVertex(matrix, this.left + this.width, y2, 0.0F).setUv(((float) this.width / 32.0F), ((float) y2 / 32.0F)).setColor(64, 64, 64, alpha2);
-                buffer.addVertex(matrix, this.left + this.width, y1, 0.0F).setUv(((float) this.width / 32.0F), ((float) y1 / 32.0F)).setColor(64, 64, 64, alpha1);
-                buffer.addVertex(matrix, this.left, y1, 0.0F).setUv(0, ((float) y1 / 32.0F)).setColor(64, 64, 64, alpha1);
-            });
+            graphics.blit(RenderPipelines.GUI_TEXTURED, this.backgroundLocation, this.left, y1, this.right, y2, this.width, y2 - y1, this.width, y2 - y1,32, 32, 0xFF404040);
         }
     }
     

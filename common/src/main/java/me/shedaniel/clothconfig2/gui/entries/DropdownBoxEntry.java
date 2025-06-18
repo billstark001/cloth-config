@@ -38,7 +38,7 @@ import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.ApiStatus;
@@ -191,8 +191,8 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         
         @Override
         public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-            graphics.fill(bounds.x, bounds.y, bounds.x + bounds.width, bounds.y + bounds.height, topRenderer.isSelected ? -1 : -6250336);
-            graphics.fill(bounds.x + 1, bounds.y + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, -16777216);
+            graphics.fill(bounds.x, bounds.y, bounds.x + bounds.width, bounds.y + bounds.height, topRenderer.isSelected ? -1 : 0xffa0a0a0);
+            graphics.fill(bounds.x + 1, bounds.y + 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1, 0xff000000);
             topRenderer.render(graphics, mouseX, mouseY, bounds.x, bounds.y, bounds.width, bounds.height, delta);
             topRenderer.updateBounds(bounds);
             if (menu.isExpanded())
@@ -416,8 +416,6 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
             int cWidth = getCellCreator().getCellWidth();
             graphics.fill(lastRectangle.x, lastRectangle.y + lastRectangle.height, lastRectangle.x + cWidth, lastRectangle.y + lastRectangle.height + last10Height + 1, isExpanded() ? -1 : -6250336);
             graphics.fill(lastRectangle.x + 1, lastRectangle.y + lastRectangle.height + 1, lastRectangle.x + cWidth - 1, lastRectangle.y + lastRectangle.height + last10Height, -16777216);
-            graphics.pose().pushPose();
-            graphics.pose().translate(0, 0, 300f);
             
             graphics.enableScissor(lastRectangle.x, lastRectangle.y + lastRectangle.height + 1, lastRectangle.x + cWidth - 6, lastRectangle.y + lastRectangle.height + last10Height);
             double yy = lastRectangle.y + lastRectangle.height - scroll;
@@ -449,9 +447,8 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
                 height = Math.max(10, height);
                 int minY = (int) Math.min(Math.max((int) scroll * (last10Height - height) / getMaxScrollPosition() + (lastRectangle.y + lastRectangle.height + 1), (lastRectangle.y + lastRectangle.height + 1)), (lastRectangle.y + lastRectangle.height + 1 + last10Height) - height);
                 
-                graphics.blitSprite(RenderType::guiTextured, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollbarPositionMinX, minY, 6, height);
             }
-            graphics.pose().popPose();
         }
         
         @Override
@@ -619,7 +616,7 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
             boolean b = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
             if (b)
                 graphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, -15132391);
-            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6, y + 3, b ? 16777215 : 8947848);
+            graphics.drawString(Minecraft.getInstance().font, toTextFunction.apply(r).getVisualOrderText(), x + 6, y + 3, b ? 0xffffffff : 0xff888888);
         }
         
         @Override
@@ -691,7 +688,7 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         }
         
         public final int getPreferredTextColor() {
-            return getConfigError().isPresent() ? 16733525 : 16777215;
+            return getConfigError().isPresent() ? 0xffff5555 : 0xffffffff;
         }
         
         public final boolean isSuggestionMode() {

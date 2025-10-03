@@ -40,6 +40,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
@@ -369,20 +370,20 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
         }
         
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            this.updateScrollingState(mouseX, mouseY, button);
-            if (!this.isMouseOver(mouseX, mouseY)) {
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+            this.updateScrollingState(event.x(), event.y(), event.buttonInfo().button());
+            if (!this.isMouseOver(event.x(), event.y())) {
                 return false;
             } else {
                 for (R entry : children()) {
-                    if (entry.mouseClicked(mouseX, mouseY, button)) {
+                    if (entry.mouseClicked(event, doubleClick)) {
                         this.setFocused(entry);
                         this.setDragging(true);
                         return true;
                     }
                 }
-                if (button == 0) {
-                    this.clickedHeader((int) (mouseX - (double) (this.left + this.width / 2 - this.getItemWidth() / 2)), (int) (mouseY - (double) this.top) + (int) this.getScroll() - 4);
+                if (event.button() == 0) {
+                    this.clickedHeader((int) (event.x() - (double) (this.left + this.width / 2 - this.getItemWidth() / 2)), (int) (event.y() - (double) this.top) + (int) this.getScroll() - 4);
                     return true;
                 }
                 

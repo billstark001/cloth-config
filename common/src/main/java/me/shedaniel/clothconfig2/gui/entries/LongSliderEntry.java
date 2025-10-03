@@ -30,6 +30,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.ApiStatus;
@@ -174,17 +176,17 @@ public class LongSliderEntry extends TooltipListEntry<Long> {
         }
         
         @Override
-        public boolean keyPressed(int int_1, int int_2, int int_3) {
+        public boolean keyPressed(KeyEvent event) {
             if (!isEditable())
                 return false;
-            return super.keyPressed(int_1, int_2, int_3);
+            return super.keyPressed(event);
         }
         
         @Override
-        public boolean mouseDragged(double double_1, double double_2, int int_1, double double_3, double double_4) {
+        public boolean mouseDragged(MouseButtonEvent event, double double_3, double double_4) {
             if (!isEditable())
                 return false;
-            return super.mouseDragged(double_1, double_2, int_1, double_3, double_4);
+            return super.mouseDragged(event, double_3, double_4);
         }
         
         public double getValue() {

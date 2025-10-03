@@ -26,7 +26,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 @Mod(ClothConfigInitializer.MOD_ID)
 public class ClothConfigForge {
     public ClothConfigForge() {
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             ClothConfigForgeDemo.registerModsPage();
         }
     }

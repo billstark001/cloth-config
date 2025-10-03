@@ -27,6 +27,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +56,7 @@ public class ClothConfigTabButton extends AbstractButton {
     }
     
     @Override
-    public void onPress() {
+    public void onPress(InputWithModifiers input) {
         if (index != -1)
             screen.selectedCategoryIndex = index;
         screen.init(Minecraft.getInstance(), screen.width, screen.height);
@@ -73,8 +75,8 @@ public class ClothConfigTabButton extends AbstractButton {
     }
     
     @Override
-    protected boolean isValidClickButton(int i) {
-        return visible && active && super.isValidClickButton(i);
+    protected boolean isValidClickButton(MouseButtonInfo mouseButtonInfo) {
+        return visible && active && super.isValidClickButton(mouseButtonInfo);
     }
     
     @Override

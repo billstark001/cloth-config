@@ -38,12 +38,16 @@ import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -232,9 +236,9 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         }
         
         @Override
-        public boolean mouseClicked(double double_1, double double_2, int int_1) {
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
             dontReFocus = false;
-            boolean b = super.mouseClicked(double_1, double_2, int_1);
+            boolean b = super.mouseClicked(event, doubleClick);
             if (dontReFocus) {
                 setFocused(null);
                 dontReFocus = false;
@@ -462,13 +466,13 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         }
         
         @Override
-        public boolean mouseDragged(double double_1, double double_2, int int_1, double double_3, double double_4) {
+        public boolean mouseDragged(MouseButtonEvent event, double double_3, double double_4) {
             if (!isExpanded())
                 return false;
-            if (int_1 == 0 && this.scrolling) {
-                if (double_2 < (double) lastRectangle.y + lastRectangle.height) {
+            if (event.button() == 0 && this.scrolling) {
+                if (event.y() < (double) lastRectangle.y + lastRectangle.height) {
                     scrollTo(0, false);
-                } else if (double_2 > (double) lastRectangle.y + lastRectangle.height + getHeight()) {
+                } else if (event.y() > (double) lastRectangle.y + lastRectangle.height + getHeight()) {
                     scrollTo(getMaxScrollPosition(), false);
                 } else {
                     double double_5 = Math.max(1, this.getMaxScrollPosition());
@@ -497,11 +501,11 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         }
         
         @Override
-        public boolean mouseClicked(double double_1, double double_2, int int_1) {
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
             if (!isExpanded())
                 return false;
-            updateScrollingState(double_1, double_2, int_1);
-            return super.mouseClicked(double_1, double_2, int_1) || scrolling;
+            updateScrollingState(event.x(), event.y(), event.button());
+            return super.mouseClicked(event, doubleClick) || scrolling;
         }
         
         public void offset(double value, boolean animated) {
@@ -642,8 +646,8 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
         }
         
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int int_1) {
-            boolean b = rendering && mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+            boolean b = rendering && event.x() >= x && event.x() <= x + width && event.y() >= y && event.y() <= y + height;
             if (b) {
                 getEntry().selectionElement.topRenderer.setValue(r);
                 getEntry().selectionElement.setFocused(null);
@@ -738,17 +742,17 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
                 }
                 
                 @Override
-                public boolean keyPressed(int int_1, int int_2, int int_3) {
-                    if (int_1 == 257 || int_1 == 335) {
+                public boolean keyPressed(KeyEvent event) {
+                    if (event.key() == GLFW.GLFW_KEY_ENTER || event.key() == GLFW.GLFW_KEY_ESCAPE) {
                         DefaultSelectionTopCellElement.this.selectFirstRecommendation();
                         return true;
                     }
-                    return isSuggestionMode() && super.keyPressed(int_1, int_2, int_3);
+                    return isSuggestionMode() && super.keyPressed(event);
                 }
                 
                 @Override
-                public boolean charTyped(char chr, int keyCode) {
-                    return isSuggestionMode() && super.charTyped(chr, keyCode);
+                public boolean charTyped(CharacterEvent event) {
+                    return isSuggestionMode() && super.charTyped(event);
                 }
             };
             textFieldWidget.setBordered(false);

@@ -19,9 +19,14 @@
 
 package me.shedaniel.clothconfig2.api;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.InputQuirks;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
@@ -67,7 +72,12 @@ public class Modifier {
     }
     
     public static Modifier current() {
-        return Modifier.of(Screen.hasAltDown(), Screen.hasControlDown(), Screen.hasShiftDown());
+        Window window = Minecraft.getInstance().getWindow();
+        boolean altDown = InputConstants.isKeyDown(window, GLFW.GLFW_KEY_LEFT_ALT) || InputConstants.isKeyDown(window, GLFW.GLFW_KEY_RIGHT_ALT);
+        boolean controlDown = InputQuirks.REPLACE_CTRL_KEY_WITH_CMD_KEY ? InputConstants.isKeyDown(window, GLFW.GLFW_KEY_LEFT_SUPER) || InputConstants.isKeyDown(window, GLFW.GLFW_KEY_RIGHT_SUPER)
+                : InputConstants.isKeyDown(window, GLFW.GLFW_KEY_LEFT_CONTROL) || InputConstants.isKeyDown(window, GLFW.GLFW_KEY_RIGHT_CONTROL);
+        boolean shiftDown = InputConstants.isKeyDown(window, GLFW.GLFW_KEY_LEFT_SHIFT) || InputConstants.isKeyDown(window, GLFW.GLFW_KEY_RIGHT_SHIFT);
+        return Modifier.of(altDown, controlDown, shiftDown);
     }
     
     private static short setFlag(short base, short flag, boolean val) {

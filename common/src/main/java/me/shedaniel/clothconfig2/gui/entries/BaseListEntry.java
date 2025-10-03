@@ -31,6 +31,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -349,12 +350,12 @@ public abstract class BaseListEntry<T, C extends BaseListCell, SELF extends Base
         protected Rectangle rectangle = new Rectangle();
         
         @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int int_1) {
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
             if (!isEnabled())
                 return false;
-            if (resetWidget.isMouseOver(mouseX, mouseY)) {
+            if (resetWidget.isMouseOver(event.x(), event.y())) {
                 return false;
-            } else if (isInsideCreateNew(mouseX, mouseY)) {
+            } else if (isInsideCreateNew(event.x(), event.y())) {
                 setExpanded(true);
                 C cell;
                 if (insertInFront()) {
@@ -367,7 +368,7 @@ public abstract class BaseListEntry<T, C extends BaseListCell, SELF extends Base
                 cell.onAdd();
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 return true;
-            } else if (isDeleteButtonEnabled() && isInsideDelete(mouseX, mouseY)) {
+            } else if (isDeleteButtonEnabled() && isInsideDelete(event.x(), event.y())) {
                 GuiEventListener focused = getFocused();
                 if (isExpanded() && focused instanceof BaseListCell) {
                     ((BaseListCell) focused).onDelete();
@@ -377,7 +378,7 @@ public abstract class BaseListEntry<T, C extends BaseListCell, SELF extends Base
                     Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 }
                 return true;
-            } else if (rectangle.contains(mouseX, mouseY)) {
+            } else if (rectangle.contains(event.x(), event.y())) {
                 setExpanded(!expanded);
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 return true;

@@ -73,13 +73,13 @@ public interface ModifierKeyCode {
     
     default boolean matchesCurrentMouse() {
         if (!isUnknown() && getType() == InputConstants.Type.MOUSE && getModifier().matchesCurrent()) {
-            return GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(), getKeyCode().getValue()) == GLFW.GLFW_PRESS;
+            return GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().handle(), getKeyCode().getValue()) == GLFW.GLFW_PRESS;
         }
         return false;
     }
     
     default boolean matchesCurrentKey() {
-        return !isUnknown() && getType() == InputConstants.Type.KEYSYM && getModifier().matchesCurrent() && InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), getKeyCode().getValue());
+        return !isUnknown() && getType() == InputConstants.Type.KEYSYM && getModifier().matchesCurrent() && InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), getKeyCode().getValue());
     }
     
     default ModifierKeyCode setKeyCodeAndModifier(InputConstants.Key keyCode, Modifier modifier) {

@@ -29,6 +29,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -64,15 +65,15 @@ public abstract class DynamicSmoothScrollingEntryListWidget<E extends DynamicEnt
     }
     
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
         if (!smoothScrolling)
-            return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-        if ((this.getFocused() != null && this.isDragging() && button == 0) && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
+            return super.mouseDragged(event, deltaX, deltaY);
+        if ((this.getFocused() != null && this.isDragging() && event.button() == 0) && this.getFocused().mouseDragged(event, deltaX, deltaY)) {
             return true;
-        } else if (button == 0 && this.scrolling) {
-            if (mouseY < (double) this.top) {
+        } else if (event.button() == 0 && this.scrolling) {
+            if (event.y() < (double) this.top) {
                 this.capYPosition(0.0D);
-            } else if (mouseY > (double) this.bottom) {
+            } else if (event.y() > (double) this.bottom) {
                 this.capYPosition(this.getMaxScroll());
             } else {
                 double double_5 = Math.max(1, this.getMaxScroll());

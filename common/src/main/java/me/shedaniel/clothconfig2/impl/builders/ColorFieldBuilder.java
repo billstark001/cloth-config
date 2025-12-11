@@ -21,8 +21,6 @@ package me.shedaniel.clothconfig2.impl.builders;
 
 import me.shedaniel.clothconfig2.gui.entries.ColorEntry;
 import me.shedaniel.math.Color;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +31,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class ColorFieldBuilder extends AbstractFieldBuilder<Integer, ColorEntry, ColorFieldBuilder> {
     private boolean alpha = false;
     

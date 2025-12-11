@@ -20,10 +20,10 @@
 package me.shedaniel.clothconfig2.api;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public interface TabbedConfigScreen extends ConfigScreen {
-    void registerCategoryBackground(String text, ResourceLocation identifier);
+    void registerCategoryBackground(String text, Identifier identifier);
     
     void registerCategoryTransparency(String text, boolean transparent);
     

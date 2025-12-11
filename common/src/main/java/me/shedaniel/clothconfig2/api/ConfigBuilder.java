@@ -21,15 +21,12 @@ package me.shedaniel.clothconfig2.api;
 
 import me.shedaniel.clothconfig2.impl.ConfigBuilderImpl;
 import me.shedaniel.clothconfig2.impl.ConfigEntryBuilderImpl;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 public interface ConfigBuilder {
     
     static ConfigBuilder create() {
@@ -86,9 +83,9 @@ public interface ConfigBuilder {
         return false;
     }
     
-    ResourceLocation getDefaultBackgroundTexture();
+    Identifier getDefaultBackgroundTexture();
     
-    ConfigBuilder setDefaultBackgroundTexture(ResourceLocation texture);
+    ConfigBuilder setDefaultBackgroundTexture(Identifier texture);
     
     Runnable getSavingRunnable();
     

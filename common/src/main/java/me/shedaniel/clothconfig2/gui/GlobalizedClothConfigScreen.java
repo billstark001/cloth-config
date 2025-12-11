@@ -43,7 +43,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -103,7 +103,7 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
     private boolean requestingReferenceRebuilding = false;
     
     @ApiStatus.Internal
-    public GlobalizedClothConfigScreen(Screen parent, Component title, Map<String, ConfigCategory> categoryMap, ResourceLocation backgroundLocation) {
+    public GlobalizedClothConfigScreen(Screen parent, Component title, Map<String, ConfigCategory> categoryMap, Identifier backgroundLocation) {
         super(parent, title, backgroundLocation);
         categoryMap.forEach((categoryName, category) -> {
             List<AbstractConfigEntry<?>> entries = Lists.newArrayList();
@@ -156,7 +156,7 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
         addRenderableWidget(cancelButton = Button.builder(isEdited() ? Component.translatable("text.cloth-config.cancel_discard") : Component.translatable("gui.cancel"), widget -> quit()).bounds(0, height - 26, buttonWidths, 20).build());
         addRenderableWidget(exitButton = new Button(0, height - 26, buttonWidths, 20, Component.empty(), button -> saveAll(true), Supplier::get) {
             @Override
-            public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+            public void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                 boolean hasErrors = false;
                 label:
                 for (List<AbstractConfigEntry<?>> entries : categorizedEntries.values()) {
@@ -169,7 +169,9 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
                 }
                 active = isEdited() && !hasErrors;
                 setMessage(hasErrors ? Component.translatable("text.cloth-config.error_cannot_save") : Component.translatable("text.cloth-config.save_and_done"));
-                super.renderWidget(graphics, mouseX, mouseY, delta);
+                
+                this.renderDefaultSprite(graphics);
+                this.renderDefaultLabel(graphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
             }
         });
         Optional.ofNullable(this.afterInitConsumer).ifPresent(consumer -> consumer.accept(this));
@@ -233,8 +235,8 @@ public class GlobalizedClothConfigScreen extends AbstractConfigScreen implements
         sideSlider.updatePosition(delta);
         sideScroller.updatePosition(delta);
         if (isTransparentBackground()) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition, height, sliderPosition, height, 32, 32);
-            graphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition, height, sliderPosition, height, 32, 32);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("textures/gui/menu_list_background.png"), 0, 0, sliderPosition - 14, height, sliderPosition - 14, height, 32, 32);
             graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);
             if (sliderPosition - 14 - 1 > 0) {
                 graphics.blit(RenderPipelines.GUI_TEXTURED, CCTextures.VERTICAL_HEADER_SEPARATOR, sliderPosition - 14 - 1, 0, 0.0F, 0.0F, 1, this.height, 2, 32);

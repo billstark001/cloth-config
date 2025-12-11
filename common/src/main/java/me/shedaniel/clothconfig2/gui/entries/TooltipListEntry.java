@@ -22,9 +22,6 @@ package me.shedaniel.clothconfig2.gui.entries;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.Tooltip;
 import me.shedaniel.math.Point;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
@@ -35,7 +32,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@Environment(EnvType.CLIENT)
 public abstract class TooltipListEntry<T> extends AbstractConfigListEntry<T> {
     @Nullable private Supplier<Optional<Component[]>> tooltipSupplier;
     

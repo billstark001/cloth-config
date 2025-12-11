@@ -22,13 +22,10 @@ package me.shedaniel.clothconfig2;
 import me.shedaniel.clothconfig2.api.ScrollingContainer;
 import me.shedaniel.clothconfig2.impl.EasingMethod;
 import me.shedaniel.clothconfig2.impl.EasingMethod.EasingMethodImpl;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
-@Environment(EnvType.CLIENT)
 public class ClothConfigInitializer {
     public static final Logger LOGGER = LogManager.getFormatterLogger("ClothConfig");
     

@@ -33,8 +33,6 @@ import me.shedaniel.clothconfig2.gui.widget.DynamicElementListWidget;
 import me.shedaniel.clothconfig2.gui.widget.SearchFieldEntry;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -44,7 +42,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -57,7 +55,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"rawtypes", "DuplicatedCode"})
-@Environment(EnvType.CLIENT)
 public class ClothConfigScreen extends AbstractTabbedConfigScreen {
     private final ScrollingContainer tabsScroller = new ScrollingContainer() {
         @Override
@@ -87,7 +84,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
     private final Map<String, ConfigCategory> categoryMap;
     
     @ApiStatus.Internal
-    public ClothConfigScreen(Screen parent, Component title, Map<String, ConfigCategory> categoryMap, ResourceLocation backgroundLocation) {
+    public ClothConfigScreen(Screen parent, Component title, Map<String, ConfigCategory> categoryMap, Identifier backgroundLocation) {
         super(parent, title, backgroundLocation);
         categoryMap.forEach((categoryName, category) -> {
             List<AbstractConfigEntry<?>> entries = Lists.newArrayList();
@@ -138,7 +135,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
         addRenderableWidget(Button.builder(isEdited() ? Component.translatable("text.cloth-config.cancel_discard") : Component.translatable("gui.cancel"), widget -> quit()).bounds(width / 2 - buttonWidths - 3, height - 26, buttonWidths, 20).build());
         addRenderableWidget(new Button(width / 2 + 3, height - 26, buttonWidths, 20, Component.empty(), button -> saveAll(true), Supplier::get) {
             @Override
-            public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+            public void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                 boolean hasErrors = false;
                 for (List<AbstractConfigEntry<?>> entries : Lists.newArrayList(categorizedEntries.values())) {
                     for (AbstractConfigEntry<?> entry : entries)
@@ -151,7 +148,9 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
                 }
                 active = isEdited() && !hasErrors;
                 setMessage(hasErrors ? Component.translatable("text.cloth-config.error_cannot_save") : Component.translatable("text.cloth-config.save_and_done"));
-                super.renderWidget(graphics, mouseX, mouseY, delta);
+                
+                this.renderDefaultSprite(graphics);
+                this.renderDefaultLabel(graphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
             }
         });
         if (isShowingTabs()) {
@@ -160,7 +159,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             tabsRightBounds = new Rectangle(width - 18, 41, 18, 24);
             childrenL().add(buttonLeftTab = new Button(4, 44, 12, 18, Component.empty(), button -> tabsScroller.scrollTo(0, true), Supplier::get) {
                 @Override
-                public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+                public void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                     graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, getX(), getY(), 12, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
                 }
             });
@@ -172,7 +171,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
             childrenL().addAll(tabButtons);
             childrenL().add(buttonRightTab = new Button(width - 16, 44, 12, 18, Component.empty(), button -> tabsScroller.scrollTo(tabsScroller.getMaxScroll(), true), Supplier::get) {
                 @Override
-                public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+                public void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                     graphics.blit(RenderPipelines.GUI_TEXTURED, CONFIG_TEX, getX(), getY(), 0, 18 * (!this.isActive() ? 0 : this.isHoveredOrFocused() ? 2 : 1), width, height, 256, 256, ARGB.white(this.alpha));
                 }
             });
@@ -310,7 +309,7 @@ public class ClothConfigScreen extends AbstractTabbedConfigScreen {
         public Rectangle thisTimeTarget;
         public long lastTouch;
         
-        public ListWidget(AbstractConfigScreen screen, Minecraft client, int width, int height, int top, int bottom, ResourceLocation backgroundLocation) {
+        public ListWidget(AbstractConfigScreen screen, Minecraft client, int width, int height, int top, int bottom, Identifier backgroundLocation) {
             super(client, width, height, top, bottom, screen.isTransparentBackground() ? null : backgroundLocation);
             setRenderSelection(false);
             this.screen = screen;

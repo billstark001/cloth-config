@@ -19,6 +19,10 @@
 
 package me.shedaniel.clothconfig;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.example.ExampleConfig;
+import me.shedaniel.autoconfig.serializer.DummyConfigSerializer;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import me.shedaniel.clothconfig2.ClothConfigInitializer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -26,6 +30,11 @@ import net.neoforged.fml.loading.FMLEnvironment;
 @Mod(ClothConfigInitializer.MOD_ID)
 public class ClothConfigForge {
     public ClothConfigForge() {
+        AutoConfig.register(
+                ExampleConfig.class,
+                PartitioningSerializer.wrap(DummyConfigSerializer::new)
+        );
+        
         if (FMLEnvironment.getDist().isClient()) {
             ClothConfigForgeDemo.registerModsPage();
         }

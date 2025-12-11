@@ -26,18 +26,15 @@ import me.shedaniel.clothconfig2.api.Expandable;
 import me.shedaniel.clothconfig2.gui.AbstractConfigScreen;
 import me.shedaniel.clothconfig2.gui.ClothConfigScreen;
 import me.shedaniel.clothconfig2.gui.GlobalizedClothConfigScreen;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public class ConfigBuilderImpl implements ConfigBuilder {
     private Runnable savingRunnable;
@@ -50,7 +47,7 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     private boolean listSmoothScroll = true;
     private boolean doesConfirmSave = true;
     private boolean transparentBackground = true;
-    private ResourceLocation defaultBackground = ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
+    private Identifier defaultBackground = Identifier.withDefaultNamespace("textures/block/dirt.png");
     private Consumer<Screen> afterInitConsumer = screen -> {};
     private final Map<String, ConfigCategory> categoryMap = Maps.newLinkedHashMap();
     private String fallbackCategory = null;
@@ -204,12 +201,12 @@ public class ConfigBuilderImpl implements ConfigBuilder {
     }
     
     @Override
-    public ResourceLocation getDefaultBackgroundTexture() {
+    public Identifier getDefaultBackgroundTexture() {
         return defaultBackground;
     }
     
     @Override
-    public ConfigBuilder setDefaultBackgroundTexture(ResourceLocation texture) {
+    public ConfigBuilder setDefaultBackgroundTexture(Identifier texture) {
         this.defaultBackground = texture;
         return this;
     }

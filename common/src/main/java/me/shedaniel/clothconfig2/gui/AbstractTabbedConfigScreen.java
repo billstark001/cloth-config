@@ -23,20 +23,20 @@ import com.google.common.collect.Maps;
 import me.shedaniel.clothconfig2.api.TabbedConfigScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Map;
 
 public abstract class AbstractTabbedConfigScreen extends AbstractConfigScreen implements TabbedConfigScreen {
     private final Map<String, Boolean> categoryTransparentBackground = Maps.newHashMap();
-    private final Map<String, ResourceLocation> categoryBackgroundLocation = Maps.newHashMap();
+    private final Map<String, Identifier> categoryBackgroundLocation = Maps.newHashMap();
     
-    protected AbstractTabbedConfigScreen(Screen parent, Component title, ResourceLocation backgroundLocation) {
+    protected AbstractTabbedConfigScreen(Screen parent, Component title, Identifier backgroundLocation) {
         super(parent, title, backgroundLocation);
     }
     
     @Override
-    public final void registerCategoryBackground(String text, ResourceLocation identifier) {
+    public final void registerCategoryBackground(String text, Identifier identifier) {
         this.categoryBackgroundLocation.put(text, identifier);
     }
     
@@ -54,7 +54,7 @@ public abstract class AbstractTabbedConfigScreen extends AbstractConfigScreen im
     }
     
     @Override
-    public ResourceLocation getBackgroundLocation() {
+    public Identifier getBackgroundLocation() {
         Component selectedCategory = getSelectedCategory();
         if (categoryBackgroundLocation.containsKey(selectedCategory.getString()))
             return categoryBackgroundLocation.get(selectedCategory.getString());

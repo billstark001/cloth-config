@@ -21,8 +21,6 @@ package me.shedaniel.clothconfig2.gui.entries;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -38,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class BooleanListEntry extends TooltipListEntry<Boolean> {
     
     private final AtomicBoolean bool;

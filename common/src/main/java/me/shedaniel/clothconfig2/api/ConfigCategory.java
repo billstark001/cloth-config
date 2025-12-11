@@ -19,18 +19,15 @@
 
 package me.shedaniel.clothconfig2.api;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public interface ConfigCategory {
     
     Component getCategoryKey();
@@ -40,11 +37,11 @@ public interface ConfigCategory {
     
     ConfigCategory addEntry(AbstractConfigListEntry entry);
     
-    ConfigCategory setCategoryBackground(ResourceLocation identifier);
+    ConfigCategory setCategoryBackground(Identifier identifier);
     
-    void setBackground(@Nullable ResourceLocation background);
+    void setBackground(@Nullable Identifier background);
     
-    @Nullable ResourceLocation getBackground();
+    @Nullable Identifier getBackground();
     
     @Nullable
     Supplier<Optional<FormattedText[]>> getDescription();

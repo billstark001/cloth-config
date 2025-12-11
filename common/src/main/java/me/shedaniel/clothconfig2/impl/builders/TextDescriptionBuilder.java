@@ -20,8 +20,6 @@
 package me.shedaniel.clothconfig2.impl.builders;
 
 import me.shedaniel.clothconfig2.gui.entries.TextListEntry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class TextDescriptionBuilder extends FieldBuilder<Component, TextListEntry, TextDescriptionBuilder> {
     
     private int color = -1;

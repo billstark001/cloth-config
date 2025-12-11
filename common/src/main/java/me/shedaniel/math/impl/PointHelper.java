@@ -21,11 +21,8 @@ package me.shedaniel.math.impl;
 
 import me.shedaniel.math.FloatingPoint;
 import me.shedaniel.math.Point;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 
-@Environment(EnvType.CLIENT)
 public class PointHelper {
     public static Point ofMouse() {
         Minecraft client = Minecraft.getInstance();

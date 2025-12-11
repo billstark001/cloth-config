@@ -20,10 +20,9 @@
 package me.shedaniel.clothconfig2.gui.entries;
 
 import me.shedaniel.clothconfig2.gui.AbstractConfigScreen;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -34,7 +33,9 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.FormattedCharSink;
 import net.minecraft.util.Mth;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +45,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class TextListEntry extends TooltipListEntry<Object> {
     public static final int LINE_HEIGHT = 12;
     public static final int DISABLED_COLOR = ARGB.opaque(Objects.requireNonNull(ChatFormatting.DARK_GRAY.getColor()));
@@ -117,7 +117,8 @@ public class TextListEntry extends TooltipListEntry<Object> {
         if (event.button() == 0) {
             Style style = this.getTextAt(event.x(), event.y());
             AbstractConfigScreen configScreen = this.getConfigScreen();
-            if (configScreen != null && configScreen.handleComponentClicked(style)) {
+            if (configScreen != null && style != null && style.getClickEvent() != null) {
+                AbstractConfigScreen.handleClickEvent(style.getClickEvent(), Minecraft.getInstance(), configScreen);
                 return true;
             }
         }
@@ -136,11 +137,52 @@ public class TextListEntry extends TooltipListEntry<Object> {
                 int line = textY / LINE_HEIGHT;
                 if (line < this.wrappedLines.size()) {
                     FormattedCharSequence orderedText = this.wrappedLines.get(line);
-                    return this.textRenderer.getSplitter().componentStyleAtWidth(orderedText, textX);
+                    return this.componentStyleAtWidth(orderedText, textX);
                 }
             }
         }
         return null;
+    }
+    
+    private Style componentStyleAtWidth(FormattedCharSequence text, int width) {
+        class WidthLimitedCharSink implements FormattedCharSink {
+            private float maxWidth;
+            private int position;
+            
+            public WidthLimitedCharSink(final float f) {
+                this.maxWidth = f;
+            }
+            
+            public boolean accept(int i, Style style, int j) {
+                this.maxWidth -= Minecraft.getInstance().font.getSplitter().stringWidth(FormattedCharSequence.codepoint(j, style));
+                if (this.maxWidth >= 0.0F) {
+                    this.position = i + Character.charCount(j);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            public int getPosition() {
+                return this.position;
+            }
+            
+            public void resetPosition() {
+                this.position = 0;
+            }
+        }
+        
+        WidthLimitedCharSink widthLimitedCharSink = new WidthLimitedCharSink((float) width);
+        MutableObject<Style> mutableObject = new MutableObject<>();
+        text.accept((i, style, j) -> {
+            if (!widthLimitedCharSink.accept(i, style, j)) {
+                mutableObject.setValue(style);
+                return false;
+            } else {
+                return true;
+            }
+        });
+        return mutableObject.get();
     }
     
     @Override

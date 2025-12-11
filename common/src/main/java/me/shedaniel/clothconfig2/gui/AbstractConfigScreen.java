@@ -26,12 +26,10 @@ import me.shedaniel.clothconfig2.api.*;
 import me.shedaniel.clothconfig2.gui.entries.KeyCodeEntry;
 import me.shedaniel.math.Color;
 import me.shedaniel.math.Rectangle;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -39,20 +37,18 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class AbstractConfigScreen extends Screen implements ConfigScreen {
-    protected static final ResourceLocation CONFIG_TEX = ResourceLocation.fromNamespaceAndPath("cloth-config2", "textures/gui/cloth_config.png");
-    private final ResourceLocation backgroundLocation;
+    protected static final Identifier CONFIG_TEX = Identifier.fromNamespaceAndPath("cloth-config2", "textures/gui/cloth_config.png");
+    private final Identifier backgroundLocation;
     protected boolean confirmSave;
     protected final Screen parent;
     private boolean alwaysShowTabs = false;
@@ -69,7 +65,7 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
     @Nullable
     protected Consumer<Screen> afterInitConsumer = null;
     
-    protected AbstractConfigScreen(Screen parent, Component title, ResourceLocation backgroundLocation) {
+    protected AbstractConfigScreen(Screen parent, Component title, Identifier backgroundLocation) {
         super(title);
         this.parent = parent;
         this.backgroundLocation = backgroundLocation;
@@ -90,7 +86,7 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
     }
     
     @Override
-    public ResourceLocation getBackgroundLocation() {
+    public Identifier getBackgroundLocation() {
         return backgroundLocation;
     }
     
@@ -368,22 +364,7 @@ public abstract class AbstractConfigScreen extends Screen implements ConfigScree
         graphics.blit(RenderPipelines.GUI_TEXTURED, getBackgroundLocation(), rect.getMinX(), rect.getMinY(), rect.getMaxX(), rect.getMaxY(), rect.getWidth(), rect.getHeight(), rect.getWidth(), rect.getHeight(), 32, 32, Color.ofRGBA(red, green, blue, alpha).getColor());
     }
     
-    @Override
-    public boolean handleComponentClicked(@Nullable Style style) {
-        if (style == null) return false;
-        
-        ClickEvent clickEvent = style.getClickEvent();
-        
-        if (clickEvent instanceof ClickEvent.OpenUrl(URI uri)) {
-            Minecraft.getInstance().setScreen(new ConfirmLinkScreen(openInBrowser -> {
-                if (openInBrowser) {
-                    Util.getPlatform().openUri(uri);
-                }
-                
-                Minecraft.getInstance().setScreen(this);
-            }, uri.toString(), true));
-            return true;
-        }
-        return super.handleComponentClicked(style);
+    public static void handleClickEvent(ClickEvent clickEvent, Minecraft minecraft, @Nullable Screen screen) {
+        Screen.defaultHandleClickEvent(clickEvent, minecraft, screen);
     }
 }

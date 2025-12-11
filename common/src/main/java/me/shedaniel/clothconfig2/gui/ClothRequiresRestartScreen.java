@@ -19,14 +19,11 @@
 
 package me.shedaniel.clothconfig2.gui;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-@Environment(EnvType.CLIENT)
 public class ClothRequiresRestartScreen extends ConfirmScreen {
     public ClothRequiresRestartScreen(Screen parent) {
         super(t -> {

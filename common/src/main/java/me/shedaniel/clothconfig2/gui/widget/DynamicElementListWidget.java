@@ -19,8 +19,6 @@
 
 package me.shedaniel.clothconfig2.gui.widget;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
@@ -36,17 +34,16 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public abstract class DynamicElementListWidget<E extends DynamicElementListWidget.ElementEntry<E>> extends DynamicSmoothScrollingEntryListWidget<E> {
     private static final Component USAGE_NARRATION = Component.translatable("narration.selection.usage");
     
-    public DynamicElementListWidget(Minecraft client, int width, int height, int top, int bottom, ResourceLocation backgroundLocation) {
+    public DynamicElementListWidget(Minecraft client, int width, int height, int top, int bottom, Identifier backgroundLocation) {
         super(client, width, height, top, bottom, backgroundLocation);
     }
     
@@ -138,7 +135,6 @@ public abstract class DynamicElementListWidget<E extends DynamicElementListWidge
         return false;
     }
     
-    @Environment(EnvType.CLIENT)
     public abstract static class ElementEntry<E extends ElementEntry<E>> extends Entry<E> implements ContainerEventHandler, NarratableEntry {
         @Nullable
         private GuiEventListener focused;

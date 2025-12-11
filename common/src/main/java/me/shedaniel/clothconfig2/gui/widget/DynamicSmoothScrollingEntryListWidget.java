@@ -25,24 +25,21 @@ import me.shedaniel.clothconfig2.api.animator.ValueAnimator;
 import me.shedaniel.math.Color;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.math.impl.PointHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import static me.shedaniel.clothconfig2.api.scroll.ScrollingContainer.clampExtension;
 import static me.shedaniel.clothconfig2.api.scroll.ScrollingContainer.handleBounceBack;
 
-@Environment(EnvType.CLIENT)
 public abstract class DynamicSmoothScrollingEntryListWidget<E extends DynamicEntryListWidget.Entry<E>> extends DynamicEntryListWidget<E> {
     
     protected boolean smoothScrolling = true;
     protected final NumberAnimator<Double> scrollAnimator = ValueAnimator.ofDouble();
     
-    public DynamicSmoothScrollingEntryListWidget(Minecraft client, int width, int height, int top, int bottom, ResourceLocation backgroundLocation) {
+    public DynamicSmoothScrollingEntryListWidget(Minecraft client, int width, int height, int top, int bottom, Identifier backgroundLocation) {
         super(client, width, height, top, bottom, backgroundLocation);
     }
     

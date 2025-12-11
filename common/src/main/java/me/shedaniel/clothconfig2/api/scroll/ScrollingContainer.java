@@ -31,13 +31,13 @@ import me.shedaniel.clothconfig2.gui.widget.DynamicEntryListWidget;
 import me.shedaniel.math.Rectangle;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public abstract class ScrollingContainer {
-    public static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
-    public static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
+    public static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("widget/scroller");
+    public static final Identifier SCROLLER_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("widget/scroller_background");
     private final NumberAnimator<Double> scroll = ValueAnimator.ofDouble();
     private boolean draggingScrollBar = false;
     private long scrollDuration = ClothConfigInitializer.getScrollDuration();

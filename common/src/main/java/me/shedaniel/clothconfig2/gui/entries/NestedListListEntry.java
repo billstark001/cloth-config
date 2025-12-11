@@ -27,8 +27,6 @@ import me.shedaniel.clothconfig2.api.ReferenceProvider;
 import me.shedaniel.clothconfig2.gui.entries.NestedListListEntry.NestedListCell;
 import me.shedaniel.clothconfig2.gui.widget.DynamicEntryListWidget;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -49,7 +47,6 @@ import java.util.function.Supplier;
  * @param <T>     the configuration object type
  * @param <INNER> the type of the inner config entry
  */
-@Environment(EnvType.CLIENT)
 public final class NestedListListEntry<T, INNER extends AbstractConfigListEntry<T>> extends AbstractListListEntry<T, NestedListCell<T, INNER>, NestedListListEntry<T, INNER>> {
     private final List<ReferenceProvider<?>> referencableEntries = Lists.newArrayList();
     

@@ -29,8 +29,6 @@ import me.shedaniel.clothconfig2.api.HideableWidget;
 import me.shedaniel.clothconfig2.api.Requirement;
 import me.shedaniel.clothconfig2.api.TickableWidget;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
@@ -46,7 +44,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -57,7 +55,6 @@ import java.util.function.Predicate;
 import static me.shedaniel.clothconfig2.api.scroll.ScrollingContainer.SCROLLER_BACKGROUND_SPRITE;
 import static me.shedaniel.clothconfig2.api.scroll.ScrollingContainer.SCROLLER_SPRITE;
 
-@Environment(EnvType.CLIENT)
 public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.Entry<E>> extends AbstractContainerEventHandler implements Renderable, NarratableEntry {
     protected static final int DRAG_OUTSIDE = -2;
     protected final Minecraft client;
@@ -84,9 +81,9 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
      * The location of background. If <code>null</code>, Cloth Config will follow the minecraft transparent style.
      */
     @Nullable
-    protected ResourceLocation backgroundLocation;
+    protected Identifier backgroundLocation;
     
-    public DynamicEntryListWidget(Minecraft client, int width, int height, int top, int bottom, @Nullable ResourceLocation backgroundLocation) {
+    public DynamicEntryListWidget(Minecraft client, int width, int height, int top, int bottom, @Nullable Identifier backgroundLocation) {
         this.client = client;
         this.width = width;
         this.height = height;
@@ -627,7 +624,6 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
         private SmoothScrollingSettings() {}
     }
     
-    @Environment(EnvType.CLIENT)
     public abstract static class Entry<E extends Entry<E>> implements GuiEventListener, TickableWidget, HideableWidget, DisableableWidget {
         @Deprecated DynamicEntryListWidget<E> parent;
         @Deprecated final Rectangle bounds = new Rectangle();
@@ -730,7 +726,6 @@ public abstract class DynamicEntryListWidget<E extends DynamicEntryListWidget.En
         }
     }
     
-    @Environment(EnvType.CLIENT)
     class Entries extends AbstractList<E> {
         private final ArrayList<E> items;
         

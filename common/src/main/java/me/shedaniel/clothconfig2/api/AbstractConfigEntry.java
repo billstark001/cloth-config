@@ -25,8 +25,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import me.shedaniel.clothconfig2.gui.AbstractConfigScreen;
 import me.shedaniel.clothconfig2.gui.widget.DynamicElementListWidget;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -42,7 +40,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractConfigEntry<T> extends DynamicElementListWidget.ElementEntry<AbstractConfigEntry<T>> implements ReferenceProvider<T>, ValueHolder<T> {
     private AbstractConfigScreen screen;
     private Supplier<Optional<Component>> errorSupplier;

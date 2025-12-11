@@ -23,18 +23,15 @@ import me.shedaniel.clothconfig2.ClothConfigInitializer;
 import me.shedaniel.math.Color;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.math.impl.PointHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import static me.shedaniel.clothconfig2.api.ScrollingContainer.clampExtension;
 import static me.shedaniel.clothconfig2.api.ScrollingContainer.handleScrollingPosition;
 
-@Environment(EnvType.CLIENT)
 @Deprecated
 public abstract class DynamicNewSmoothScrollingEntryListWidget<E extends DynamicEntryListWidget.Entry<E>> extends DynamicEntryListWidget<E> {
     
@@ -43,7 +40,7 @@ public abstract class DynamicNewSmoothScrollingEntryListWidget<E extends Dynamic
     protected long start;
     protected long duration;
     
-    public DynamicNewSmoothScrollingEntryListWidget(Minecraft client, int width, int height, int top, int bottom, ResourceLocation backgroundLocation) {
+    public DynamicNewSmoothScrollingEntryListWidget(Minecraft client, int width, int height, int top, int bottom, Identifier backgroundLocation) {
         super(client, width, height, top, bottom, backgroundLocation);
     }
     

@@ -21,10 +21,7 @@ package me.shedaniel.clothconfig2.api;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.InputQuirks;
 import org.lwjgl.glfw.GLFW;
 
@@ -36,7 +33,6 @@ import java.util.Objects;
  *
  * @author Siphalor
  */
-@Environment(EnvType.CLIENT)
 public class Modifier {
     private final short value;
     

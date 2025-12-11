@@ -22,8 +22,6 @@ package me.shedaniel.clothconfig2.gui.entries;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
 import me.shedaniel.clothconfig2.api.ModifierKeyCode;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,7 +38,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("DuplicatedCode")
-@Environment(EnvType.CLIENT)
 public class KeyCodeEntry extends TooltipListEntry<ModifierKeyCode> {
     private ModifierKeyCode value;
     private final ModifierKeyCode original;

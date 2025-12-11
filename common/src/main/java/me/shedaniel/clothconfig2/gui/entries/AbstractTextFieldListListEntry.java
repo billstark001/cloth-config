@@ -19,8 +19,6 @@
 
 package me.shedaniel.clothconfig2.gui.entries;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -47,7 +45,6 @@ import java.util.function.Supplier;
  * @param <SELF> the "curiously recurring template pattern" type parameter
  * @see AbstractListListEntry
  */
-@Environment(EnvType.CLIENT)
 public abstract class AbstractTextFieldListListEntry<T, C extends AbstractTextFieldListListEntry.AbstractTextFieldListCell<T, C, SELF>, SELF extends AbstractTextFieldListListEntry<T, C, SELF>> extends AbstractListListEntry<T, C, SELF> {
     
     @ApiStatus.Internal

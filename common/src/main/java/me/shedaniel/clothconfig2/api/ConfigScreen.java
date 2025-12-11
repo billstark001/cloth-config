@@ -20,7 +20,7 @@
 package me.shedaniel.clothconfig2.api;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -31,7 +31,7 @@ public interface ConfigScreen {
     
     void setAfterInitConsumer(@Nullable Consumer<Screen> afterInitConsumer);
     
-    ResourceLocation getBackgroundLocation();
+    Identifier getBackgroundLocation();
     
     boolean isRequiresRestart();
     

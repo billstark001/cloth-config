@@ -19,13 +19,18 @@
 
 package me.shedaniel.clothconfig;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import me.shedaniel.autoconfig.AutoConfigClient;
+import me.shedaniel.autoconfig.example.ExampleConfig;
 import me.shedaniel.clothconfig2.ClothConfigDemo;
+import me.shedaniel.clothconfig2.api.Modifier;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 public class ClothConfigForgeDemo {
     public static void registerModsPage() {
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (container, parent) -> {
+            if (RenderSystem.isOnRenderThread() && Modifier.current().hasShift()) return AutoConfigClient.getConfigScreen(ExampleConfig.class, parent).get();
             return ClothConfigDemo.getConfigBuilderWithDemo().setParentScreen(parent).build();
         });
     }

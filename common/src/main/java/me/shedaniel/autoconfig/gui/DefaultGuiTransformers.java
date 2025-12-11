@@ -27,8 +27,6 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.gui.entries.TextListEntry;
 import me.shedaniel.clothconfig2.gui.entries.TooltipListEntry;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Environment(EnvType.CLIENT)
 public class DefaultGuiTransformers {
     
     private static final ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();

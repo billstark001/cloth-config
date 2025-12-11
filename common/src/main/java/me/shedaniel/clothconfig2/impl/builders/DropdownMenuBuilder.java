@@ -24,14 +24,12 @@ import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry.DefaultSelectionCe
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry.DefaultSelectionTopCellElement;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry.SelectionCellCreator;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry.SelectionTopCellElement;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -45,7 +43,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>, DropdownMenuBuilder<T>> {
     protected SelectionTopCellElement<T> topCellElement;
     protected SelectionCellCreator<T> cellCreator;
@@ -131,25 +128,25 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
     }
     
     public static class TopCellElementBuilder {
-        public static final Function<String, ResourceLocation> IDENTIFIER_FUNCTION = str -> {
+        public static final Function<String, Identifier> IDENTIFIER_FUNCTION = str -> {
             try {
-                return ResourceLocation.parse(str);
+                return Identifier.parse(str);
             } catch (NumberFormatException e) {
                 return null;
             }
         };
-        public static final Function<String, ResourceLocation> ITEM_IDENTIFIER_FUNCTION = str -> {
+        public static final Function<String, Identifier> ITEM_IDENTIFIER_FUNCTION = str -> {
             try {
-                ResourceLocation identifier = ResourceLocation.parse(str);
+                Identifier identifier = Identifier.parse(str);
                 if (BuiltInRegistries.ITEM.getOptional(identifier).isPresent())
                     return identifier;
             } catch (Exception ignored) {
             }
             return null;
         };
-        public static final Function<String, ResourceLocation> BLOCK_IDENTIFIER_FUNCTION = str -> {
+        public static final Function<String, Identifier> BLOCK_IDENTIFIER_FUNCTION = str -> {
             try {
-                ResourceLocation identifier = ResourceLocation.parse(str);
+                Identifier identifier = Identifier.parse(str);
                 if (BuiltInRegistries.BLOCK.getOptional(identifier).isPresent())
                     return identifier;
             } catch (Exception ignored) {
@@ -158,14 +155,14 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
         };
         public static final Function<String, Item> ITEM_FUNCTION = str -> {
             try {
-                return BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse(str)).orElse(null);
+                return BuiltInRegistries.ITEM.getOptional(Identifier.parse(str)).orElse(null);
             } catch (Exception ignored) {
             }
             return null;
         };
         public static final Function<String, Block> BLOCK_FUNCTION = str -> {
             try {
-                return BuiltInRegistries.BLOCK.getOptional(ResourceLocation.parse(str)).orElse(null);
+                return BuiltInRegistries.BLOCK.getOptional(Identifier.parse(str)).orElse(null);
             } catch (Exception ignored) {
             }
             return null;
@@ -180,8 +177,8 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
             return new DefaultSelectionTopCellElement<>(value, toObjectFunction, toTextFunction);
         }
         
-        public static SelectionTopCellElement<ResourceLocation> ofItemIdentifier(Item item) {
-            return new DefaultSelectionTopCellElement<ResourceLocation>(BuiltInRegistries.ITEM.getKey(item), ITEM_IDENTIFIER_FUNCTION, identifier -> Component.literal(identifier.toString())) {
+        public static SelectionTopCellElement<Identifier> ofItemIdentifier(Item item) {
+            return new DefaultSelectionTopCellElement<Identifier>(BuiltInRegistries.ITEM.getKey(item), ITEM_IDENTIFIER_FUNCTION, identifier -> Component.literal(identifier.toString())) {
                 @Override
                 public void render(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, int width, int height, float delta) {
                     textFieldWidget.setX(x + 4);
@@ -197,8 +194,8 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
             };
         }
         
-        public static SelectionTopCellElement<ResourceLocation> ofBlockIdentifier(Block block) {
-            return new DefaultSelectionTopCellElement<ResourceLocation>(BuiltInRegistries.BLOCK.getKey(block), BLOCK_IDENTIFIER_FUNCTION, identifier -> Component.literal(identifier.toString())) {
+        public static SelectionTopCellElement<Identifier> ofBlockIdentifier(Block block) {
+            return new DefaultSelectionTopCellElement<Identifier>(BuiltInRegistries.BLOCK.getKey(block), BLOCK_IDENTIFIER_FUNCTION, identifier -> Component.literal(identifier.toString())) {
                 @Override
                 public void render(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, int width, int height, float delta) {
                     textFieldWidget.setX(x + 4);
@@ -360,20 +357,20 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
             };
         }
         
-        public static SelectionCellCreator<ResourceLocation> ofItemIdentifier() {
+        public static SelectionCellCreator<Identifier> ofItemIdentifier() {
             return ofItemIdentifier(20, 146, 7);
         }
         
-        public static SelectionCellCreator<ResourceLocation> ofItemIdentifier(int maxItems) {
+        public static SelectionCellCreator<Identifier> ofItemIdentifier(int maxItems) {
             return ofItemIdentifier(20, 146, maxItems);
         }
         
-        public static SelectionCellCreator<ResourceLocation> ofItemIdentifier(int cellHeight, int cellWidth, int maxItems) {
-            return new DefaultSelectionCellCreator<ResourceLocation>() {
+        public static SelectionCellCreator<Identifier> ofItemIdentifier(int cellHeight, int cellWidth, int maxItems) {
+            return new DefaultSelectionCellCreator<Identifier>() {
                 @Override
-                public DropdownBoxEntry.SelectionCellElement<ResourceLocation> create(ResourceLocation selection) {
+                public DropdownBoxEntry.SelectionCellElement<Identifier> create(Identifier selection) {
                     ItemStack s = new ItemStack(BuiltInRegistries.ITEM.getValue(selection));
-                    return new DropdownBoxEntry.DefaultSelectionCellElement<ResourceLocation>(selection, toTextFunction) {
+                    return new DropdownBoxEntry.DefaultSelectionCellElement<Identifier>(selection, toTextFunction) {
                         @Override
                         public void render(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, int width, int height, float delta) {
                             rendering = true;
@@ -409,20 +406,20 @@ public class DropdownMenuBuilder<T> extends FieldBuilder<T, DropdownBoxEntry<T>,
         }
         
         
-        public static SelectionCellCreator<ResourceLocation> ofBlockIdentifier() {
+        public static SelectionCellCreator<Identifier> ofBlockIdentifier() {
             return ofBlockIdentifier(20, 146, 7);
         }
         
-        public static SelectionCellCreator<ResourceLocation> ofBlockIdentifier(int maxItems) {
+        public static SelectionCellCreator<Identifier> ofBlockIdentifier(int maxItems) {
             return ofBlockIdentifier(20, 146, maxItems);
         }
         
-        public static SelectionCellCreator<ResourceLocation> ofBlockIdentifier(int cellHeight, int cellWidth, int maxItems) {
-            return new DefaultSelectionCellCreator<ResourceLocation>() {
+        public static SelectionCellCreator<Identifier> ofBlockIdentifier(int cellHeight, int cellWidth, int maxItems) {
+            return new DefaultSelectionCellCreator<Identifier>() {
                 @Override
-                public DropdownBoxEntry.SelectionCellElement<ResourceLocation> create(ResourceLocation selection) {
+                public DropdownBoxEntry.SelectionCellElement<Identifier> create(Identifier selection) {
                     ItemStack s = new ItemStack(BuiltInRegistries.BLOCK.getValue(selection));
-                    return new DropdownBoxEntry.DefaultSelectionCellElement<ResourceLocation>(selection, toTextFunction) {
+                    return new DropdownBoxEntry.DefaultSelectionCellElement<Identifier>(selection, toTextFunction) {
                         @Override
                         public void render(GuiGraphics graphics, int mouseX, int mouseY, int x, int y, int width, int height, float delta) {
                             rendering = true;

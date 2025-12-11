@@ -20,7 +20,7 @@
 package me.shedaniel.clothconfig2.api.animator;
 
 import me.shedaniel.clothconfig2.impl.EasingMethod;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

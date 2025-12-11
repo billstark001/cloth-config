@@ -20,11 +20,10 @@
 package me.shedaniel.autoconfig.example;
 
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.DummyConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.InteractionResult;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -51,9 +50,10 @@ public class ExampleInits {
         });
     }
     
-    @Environment(EnvType.CLIENT)
     public static void exampleClientInit() {
         // how to get the gui registry for custom gui handlers
-        AutoConfig.getGuiRegistry(ExampleConfig.class);
+        if (true) {
+            AutoConfigClient.getGuiRegistry(ExampleConfig.class);
+        }
     }
 }

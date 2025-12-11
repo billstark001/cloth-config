@@ -21,8 +21,6 @@ package me.shedaniel.clothconfig2.gui.entries;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Window;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -37,7 +35,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public abstract class TextFieldListEntry<T> extends TooltipListEntry<T> {
     
     protected EditBox textFieldWidget;

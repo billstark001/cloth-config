@@ -21,8 +21,6 @@ package me.shedaniel.clothconfig2.gui;
 
 import me.shedaniel.clothconfig2.api.Tooltip;
 import me.shedaniel.math.Point;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -36,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class ClothConfigTabButton extends AbstractButton {
     
     private final int index;
@@ -59,13 +56,14 @@ public class ClothConfigTabButton extends AbstractButton {
     public void onPress(InputWithModifiers input) {
         if (index != -1)
             screen.selectedCategoryIndex = index;
-        screen.init(Minecraft.getInstance(), screen.width, screen.height);
+        screen.init(screen.width, screen.height);
     }
     
     @Override
-    public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         active = index != screen.selectedCategoryIndex;
-        super.renderWidget(graphics, mouseX, mouseY, delta);
+        this.renderDefaultSprite(graphics);
+        this.renderDefaultLabel(graphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
         
         if (isMouseOver(mouseX, mouseY)) {
             Optional<FormattedText[]> tooltip = getDescription();

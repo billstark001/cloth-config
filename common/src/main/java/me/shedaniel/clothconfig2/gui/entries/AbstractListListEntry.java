@@ -20,8 +20,6 @@
 package me.shedaniel.clothconfig2.gui.entries;
 
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +40,6 @@ import java.util.stream.Collectors;
  * @param <SELF> the "curiously recurring template pattern" type parameter
  * @see BaseListEntry
  */
-@Environment(EnvType.CLIENT)
 public abstract class AbstractListListEntry<T, C extends AbstractListListEntry.AbstractListCell<T, C, SELF>, SELF extends AbstractListListEntry<T, C, SELF>> extends BaseListEntry<T, C, SELF> {
     
     protected final BiFunction<T, SELF, C> createNewCell;

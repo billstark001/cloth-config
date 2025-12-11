@@ -19,13 +19,13 @@
 
 package me.shedaniel.clothconfig2;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class CCTextures {
     private static final String MOD_ID = "cloth-config2";
-    public static final ResourceLocation VERTICAL_HEADER_SEPARATOR = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/vertical_header_separator.png");
-    public static final ResourceLocation VERTICAL_FOOTER_SEPARATOR = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/vertical_footer_separator.png");
-    public static final ResourceLocation CONFIG = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/cloth_config.png");
+    public static final Identifier VERTICAL_HEADER_SEPARATOR = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/vertical_header_separator.png");
+    public static final Identifier VERTICAL_FOOTER_SEPARATOR = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/vertical_footer_separator.png");
+    public static final Identifier CONFIG = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/cloth_config.png");
 }

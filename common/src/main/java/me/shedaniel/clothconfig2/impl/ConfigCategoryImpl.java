@@ -23,23 +23,20 @@ import com.google.common.collect.Lists;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class ConfigCategoryImpl implements ConfigCategory {
     private final ConfigBuilder builder;
     private final List<Object> data;
     @Nullable
-    private ResourceLocation background;
+    private Identifier background;
     private final Component categoryKey;
     @Nullable
     private Supplier<Optional<FormattedText[]>> description = Optional::empty;
@@ -67,7 +64,7 @@ public class ConfigCategoryImpl implements ConfigCategory {
     }
     
     @Override
-    public ConfigCategory setCategoryBackground(ResourceLocation identifier) {
+    public ConfigCategory setCategoryBackground(Identifier identifier) {
         background = identifier;
         return this;
     }
@@ -78,13 +75,13 @@ public class ConfigCategoryImpl implements ConfigCategory {
     }
     
     @Override
-    public void setBackground(@Nullable ResourceLocation background) {
+    public void setBackground(@Nullable Identifier background) {
         this.background = background;
     }
     
     @Override
     @Nullable
-    public ResourceLocation getBackground() {
+    public Identifier getBackground() {
         return background;
     }
     

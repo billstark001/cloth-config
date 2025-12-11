@@ -19,8 +19,6 @@
 
 package me.shedaniel.clothconfig2.gui.entries;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -28,7 +26,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Environment(EnvType.CLIENT)
 public class StringListEntry extends TextFieldListEntry<String> {
     @ApiStatus.Internal
     @Deprecated

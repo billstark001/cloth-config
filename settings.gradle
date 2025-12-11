@@ -16,5 +16,6 @@ include("common")
 include("fabric")
 //include("forge")
 include("neoforge")
+include("neoforge_coremods")
 
 rootProject.name = 'cloth-config'

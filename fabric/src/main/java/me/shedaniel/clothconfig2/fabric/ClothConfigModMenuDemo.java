@@ -22,7 +22,7 @@ package me.shedaniel.clothconfig2.fabric;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import me.shedaniel.autoconfig.example.ExampleConfig;
 import me.shedaniel.clothconfig2.ClothConfigDemo;
 import me.shedaniel.clothconfig2.api.Modifier;
@@ -31,7 +31,7 @@ public class ClothConfigModMenuDemo implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return screen -> {
-            if (RenderSystem.isOnRenderThread() && Modifier.current().hasShift()) return AutoConfig.getConfigScreen(ExampleConfig.class, screen).get();
+            if (RenderSystem.isOnRenderThread() && Modifier.current().hasShift()) return AutoConfigClient.getConfigScreen(ExampleConfig.class, screen).get();
             return ClothConfigDemo.getConfigBuilderWithDemo().setParentScreen(screen).build();
         };
     }

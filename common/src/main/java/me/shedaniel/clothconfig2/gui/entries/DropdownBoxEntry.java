@@ -25,8 +25,6 @@ import com.mojang.blaze3d.platform.Window;
 import me.shedaniel.clothconfig2.ClothConfigInitializer;
 import me.shedaniel.clothconfig2.api.ScrollingContainer;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.Font;
@@ -58,7 +56,6 @@ import static me.shedaniel.clothconfig2.api.ScrollingContainer.handleScrollingPo
 import static me.shedaniel.clothconfig2.api.scroll.ScrollingContainer.SCROLLER_SPRITE;
 
 @SuppressWarnings("deprecation")
-@Environment(EnvType.CLIENT)
 public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
     protected Button resetButton;
     protected SelectionElement<T> selectionElement;

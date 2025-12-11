@@ -26,11 +26,10 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.gui.registry.api.GuiRegistryAccess;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.Identifier;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -42,10 +41,9 @@ import java.util.function.Supplier;
 
 import static java.util.stream.Collectors.*;
 
-@Environment(EnvType.CLIENT)
 public class ConfigScreenProvider<T extends ConfigData> implements Supplier<Screen> {
     
-    private static final ResourceLocation TRANSPARENT_BACKGROUND = ResourceLocation.parse(Config.Gui.Background.TRANSPARENT);
+    private static final Identifier TRANSPARENT_BACKGROUND = Identifier.parse(Config.Gui.Background.TRANSPARENT);
     
     private final ConfigManager<T> manager;
     private final GuiRegistryAccess registry;
@@ -98,19 +96,19 @@ public class ConfigScreenProvider<T extends ConfigData> implements Supplier<Scre
         
         if (configClass.isAnnotationPresent(Config.Gui.Background.class)) {
             String bg = configClass.getAnnotation(Config.Gui.Background.class).value();
-            ResourceLocation bgId = ResourceLocation.tryParse(bg);
+            Identifier bgId = Identifier.tryParse(bg);
             if (TRANSPARENT_BACKGROUND.equals(bgId))
                 builder.transparentBackground().setDefaultBackgroundTexture(null);
             else
                 builder.solidBackground().setDefaultBackgroundTexture(bgId);
         }
         
-        Map<String, ResourceLocation> categoryBackgrounds =
+        Map<String, Identifier> categoryBackgrounds =
                 Arrays.stream(configClass.getAnnotationsByType(Config.Gui.CategoryBackground.class))
                         .collect(
                                 toMap(
                                         Config.Gui.CategoryBackground::category,
-                                        ann -> ResourceLocation.parse(ann.background())
+                                        ann -> Identifier.tryParse(ann.background())
                                 )
                         );
         
@@ -138,7 +136,7 @@ public class ConfigScreenProvider<T extends ConfigData> implements Supplier<Scre
     private ConfigCategory getOrCreateCategoryForField(
             Field field,
             ConfigBuilder screenBuilder,
-            Map<String, ResourceLocation> backgroundMap,
+            Map<String, Identifier> backgroundMap,
             String baseI13n
     ) {
         String categoryName = "default";

@@ -21,12 +21,9 @@ package me.shedaniel.clothconfig2.api;
 
 import me.shedaniel.clothconfig2.gui.ClothConfigScreen;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
-@Environment(EnvType.CLIENT)
 public abstract class AbstractConfigListEntry<T> extends AbstractConfigEntry<T> {
     private final Component fieldName;
     private boolean editable = true;

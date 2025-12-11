@@ -30,8 +30,6 @@ import me.shedaniel.clothconfig2.gui.entries.MultiElementListEntry;
 import me.shedaniel.clothconfig2.gui.entries.NestedListListEntry;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
@@ -51,7 +49,6 @@ import java.util.stream.Stream;
 import static me.shedaniel.autoconfig.util.Utils.getUnsafely;
 import static me.shedaniel.autoconfig.util.Utils.setUnsafely;
 
-@Environment(EnvType.CLIENT)
 public class DefaultGuiProviders {
     
     private static final ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();

@@ -25,8 +25,6 @@ import me.shedaniel.clothconfig2.CCTextures;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.Expandable;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -43,7 +41,6 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Environment(EnvType.CLIENT)
 public class MultiElementListEntry<T> extends TooltipListEntry<T> implements Expandable {
     private final T object;
     private final List<AbstractConfigListEntry<?>> entries;

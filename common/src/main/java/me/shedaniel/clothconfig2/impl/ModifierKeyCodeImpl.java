@@ -22,11 +22,8 @@ package me.shedaniel.clothconfig2.impl;
 import com.mojang.blaze3d.platform.InputConstants;
 import me.shedaniel.clothconfig2.api.Modifier;
 import me.shedaniel.clothconfig2.api.ModifierKeyCode;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 
-@Environment(EnvType.CLIENT)
 public class ModifierKeyCodeImpl implements ModifierKeyCode {
     private InputConstants.Key keyCode;
     private Modifier modifier;

@@ -27,8 +27,6 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.Expandable;
 import me.shedaniel.clothconfig2.gui.widget.DynamicEntryListWidget;
 import me.shedaniel.math.Rectangle;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -44,7 +42,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@Environment(EnvType.CLIENT)
 public class SubCategoryListEntry extends TooltipListEntry<List<AbstractConfigListEntry>> implements Expandable {
     private final List<AbstractConfigListEntry> entries;
     private final CategoryLabelWidget widget;

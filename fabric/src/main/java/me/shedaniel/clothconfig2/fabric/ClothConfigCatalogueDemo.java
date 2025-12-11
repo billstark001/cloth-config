@@ -20,7 +20,7 @@
 package me.shedaniel.clothconfig2.fabric;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import me.shedaniel.autoconfig.example.ExampleConfig;
 import me.shedaniel.clothconfig2.ClothConfigDemo;
 import me.shedaniel.clothconfig2.api.Modifier;
@@ -29,7 +29,7 @@ import net.minecraft.client.gui.screens.Screen;
 
 public class ClothConfigCatalogueDemo {
     public static Screen createConfigScreen(Screen currentScreen, ModContainer container) {
-        if (RenderSystem.isOnRenderThread() && Modifier.current().hasShift()) return AutoConfig.getConfigScreen(ExampleConfig.class, currentScreen).get();
+        if (RenderSystem.isOnRenderThread() && Modifier.current().hasShift()) return AutoConfigClient.getConfigScreen(ExampleConfig.class, currentScreen).get();
         return ClothConfigDemo.getConfigBuilderWithDemo().setParentScreen(currentScreen).build();
     }
 }

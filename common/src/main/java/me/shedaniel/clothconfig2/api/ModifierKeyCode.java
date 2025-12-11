@@ -21,13 +21,10 @@ package me.shedaniel.clothconfig2.api;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import me.shedaniel.clothconfig2.impl.ModifierKeyCodeImpl;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
-@Environment(EnvType.CLIENT)
 public interface ModifierKeyCode {
     static ModifierKeyCode of(InputConstants.Key keyCode, Modifier modifier) {
         return new ModifierKeyCodeImpl().setKeyCodeAndModifier(keyCode, modifier);

@@ -35,9 +35,6 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'org.cadixdev.licenser'
 
-    if (it.name != "neoforge_coremods") {
-    apply plugin: 'architectury-plugin'
-
     def runNumber = (System.getenv("GITHUB_RUN_NUMBER") == null ? "9999" : System.getenv("GITHUB_RUN_NUMBER"))
 
     version = rootProject.base_version + "." + runNumber
@@ -47,6 +44,9 @@ allprojects {
     }
 
     group = rootProject.maven_group
+
+    if (it.name != "neoforge_coremods") {
+    apply plugin: 'architectury-plugin'
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"

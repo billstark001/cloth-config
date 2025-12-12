@@ -48,7 +48,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
     
     include(project(":neoforge_coremods"))
-    runtimeOnly(project(":neoforge_coremods"))
+    forgeRuntimeLibrary(project(":neoforge_coremods"))
 }
 
 processResources {

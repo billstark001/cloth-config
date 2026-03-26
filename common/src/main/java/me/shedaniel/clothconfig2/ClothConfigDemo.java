@@ -27,6 +27,7 @@ import me.shedaniel.clothconfig2.gui.entries.*;
 import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Util;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,6 +38,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -101,21 +103,23 @@ public class ClothConfigDemo {
         colors.add(entryBuilder.startColorField(Component.literal("A color field"), 0x00ffff).setDefaultValue(0x00ffff).build());
         colors.add(entryBuilder.startColorField(Component.literal("An alpha color field"), 0xff00ffff).setDefaultValue(0xff00ffff).setAlphaMode(true).build());
         colors.add(entryBuilder.startColorField(Component.literal("An alpha color field"), 0xffffffff).setDefaultValue(0xffff0000).setAlphaMode(true).build());
-        colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        SubCategoryBuilder innerColors = entryBuilder.startSubCategory(Component.literal("Inner Colors")).setExpanded(true);
-        innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        SubCategoryBuilder innerInnerColors = entryBuilder.startSubCategory(Component.literal("Inner Inner Colors")).setExpanded(true);
-        innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
-        innerColors.add(innerInnerColors.build());
-        colors.add(innerColors.build());
+        if (Minecraft.getInstance().level != null) {
+            colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            colors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            SubCategoryBuilder innerColors = entryBuilder.startSubCategory(Component.literal("Inner Colors")).setExpanded(true);
+            innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            innerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            SubCategoryBuilder innerInnerColors = entryBuilder.startSubCategory(Component.literal("Inner Inner Colors")).setExpanded(true);
+            innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            innerInnerColors.add(entryBuilder.startDropdownMenu(Component.literal("lol apple"), DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.APPLE), DropdownMenuBuilder.CellCreatorBuilder.ofItemObject()).setDefaultValue(Items.APPLE).setSelections(BuiltInRegistries.ITEM.stream().sorted(Comparator.comparing(Item::toString)).collect(Collectors.toCollection(LinkedHashSet::new))).setSaveConsumer(item -> System.out.println("save this " + item)).build());
+            innerColors.add(innerInnerColors.build());
+            colors.add(innerColors.build());
+        }
         testing.addEntry(colors.build());
         testing.addEntry(entryBuilder.startDropdownMenu(Component.literal("Suggestion Random Int"), DropdownMenuBuilder.TopCellElementBuilder.of(10,
                 s -> {
@@ -205,22 +209,24 @@ public class ClothConfigDemo {
     
         testing.addEntry(depends.build());
        
-        testing.addEntry(entryBuilder.startTextDescription(
-                Component.translatable("text.cloth-config.testing.1",
-                        Component.literal("ClothConfig").withStyle(s -> s.withBold(true).withHoverEvent(new HoverEvent.ShowItem(Util.make(new ItemStack(Items.PINK_WOOL), stack -> {
-                            stack.set(DataComponents.CUSTOM_NAME, Component.literal("(\u30FB\u2200\u30FB)"));
-                            stack.enchant(VanillaRegistries.createLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.EFFICIENCY), 10);
-                        })))),
-                        Component.translatable("text.cloth-config.testing.2").withStyle(s -> {
-                            try {
-                                return s.withColor(ChatFormatting.BLUE).withHoverEvent(new HoverEvent.ShowText(Component.literal("https://shedaniel.gitbook.io/cloth-config/"))).withClickEvent(new ClickEvent.OpenUrl(new URI("https://shedaniel.gitbook.io/cloth-config/")));
-                            } catch (URISyntaxException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }),
-                        Component.translatable("text.cloth-config.testing.3").withStyle(s -> s.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent.OpenFile(Utils.getConfigFolder().getParent().resolve("options.txt").toString())))
-                )
-        ).build());
+        if (Minecraft.getInstance().level != null) {
+            testing.addEntry(entryBuilder.startTextDescription(
+                    Component.translatable("text.cloth-config.testing.1",
+                            Component.literal("ClothConfig").withStyle(s -> s.withBold(true).withHoverEvent(new HoverEvent.ShowItem(ItemStackTemplate.fromNonEmptyStack(Util.make(new ItemStack(Items.PINK_WOOL), stack -> {
+                                stack.set(DataComponents.CUSTOM_NAME, Component.literal("(\u30FB\u2200\u30FB)"));
+                                stack.enchant(VanillaRegistries.createLookup().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.EFFICIENCY), 10);
+                            }))))),
+                            Component.translatable("text.cloth-config.testing.2").withStyle(s -> {
+                                try {
+                                    return s.withColor(ChatFormatting.BLUE).withHoverEvent(new HoverEvent.ShowText(Component.literal("https://shedaniel.gitbook.io/cloth-config/"))).withClickEvent(new ClickEvent.OpenUrl(new URI("https://shedaniel.gitbook.io/cloth-config/")));
+                                } catch (URISyntaxException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }),
+                            Component.translatable("text.cloth-config.testing.3").withStyle(s -> s.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent.OpenFile(Utils.getConfigFolder().getParent().resolve("options.txt").toString())))
+                    )
+            ).build());
+        }
         builder.transparentBackground();
         return builder;
     }

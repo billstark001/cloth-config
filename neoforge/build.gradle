@@ -28,27 +28,23 @@ configurations {
 
 dependencies {
     minecraft "com.mojang:minecraft:${rootProject.architectury.minecraft}"
-    mappings loom.officialMojangMappings()
 
     neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
     compileOnly("me.shedaniel.cloth:basic-math:0.6.1")
     forgeRuntimeLibrary(shadowCommon("me.shedaniel.cloth:basic-math:0.6.1"))
 
-    modLocalRuntime("blue.endless:jankson:${rootProject.jankson_version}")
-    modLocalRuntime("com.moandjiezana.toml:toml4j:${rootProject.toml4j_version}")
-    modLocalRuntime("org.yaml:snakeyaml:${rootProject.snakeyaml_version}")
+    localRuntime("blue.endless:jankson:${rootProject.jankson_version}")
+    localRuntime("com.moandjiezana.toml:toml4j:${rootProject.toml4j_version}")
+    localRuntime("org.yaml:snakeyaml:${rootProject.snakeyaml_version}")
     forgeRuntimeLibrary(shadowCommon("blue.endless:jankson:${rootProject.jankson_version}"))
     forgeRuntimeLibrary(shadowCommon("com.moandjiezana.toml:toml4j:${rootProject.toml4j_version}") {
         exclude(module: "gson")
     })
     forgeRuntimeLibrary(shadowCommon("org.yaml:snakeyaml:${rootProject.snakeyaml_version}"))
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
-    
-    include(project(":neoforge_coremods"))
-    forgeRuntimeLibrary(project(":neoforge_coremods"))
 }
 
 processResources {
@@ -58,7 +54,18 @@ processResources {
     inputs.property "META-INF/neoforge.mods.toml", project.version
 }
 
+jar {
+    archiveClassifier = "raw"
+}
+
+java {
+    withSourcesJar()
+}
+
 shadowJar {
+    dependsOn(jar)
+    mainSpec.sourcePaths.clear()
+    from(zipTree(jar.archiveFile))
     exclude "fabric.mod.json"
     exclude "cloth-config.accessWidener"
     relocate "blue.endless.jankson", "${rootProject.maven_group}.clothconfig.shadowed.blue.endless.jankson"
@@ -66,15 +73,19 @@ shadowJar {
     relocate "org.yaml.snakeyaml", "${rootProject.maven_group}.clothconfig.shadowed.org.yaml.snakeyaml"
 
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "shadow"
+    archiveClassifier = null
+    from rootProject.file("LICENSE.md")
 }
 
-remapJar {
-    input.set(shadowJar.archiveFile)
-    dependsOn(shadowJar)
-    archiveClassifier = "neoforge"
-
-    from rootProject.file("LICENSE.md")
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(shadowJar)
+    }
 }
 
 publishing {
@@ -103,10 +114,10 @@ unifiedPublishing {
     project {
         displayName = "[NeoForge $rootProject.supported_version] v$project.version"
         releaseType = "release"
-        gameVersions = ["1.21.11"]
+        gameVersions = ["26.1"]
         gameLoaders = ["neoforge"]
 
-        mainPublication remapJar
+        mainPublication shadowJar
 
         if (project.hasProperty("curse_api_key") || System.getenv("curse_api_key") != null) {
             curseforge {

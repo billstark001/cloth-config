@@ -28,16 +28,17 @@ on:
             - v19
             - v20
             - v21.11
+            - v26.1
 
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
-            - name: Set up JDK 21
+            - name: Set up JDK 25
               uses: actions/setup-java@v2
               with:
-                  java-version: 21
+                  java-version: 25
                   distribution: 'temurin'
             - name: Upload to Maven
               run: ./gradlew publish modPublish --stacktrace

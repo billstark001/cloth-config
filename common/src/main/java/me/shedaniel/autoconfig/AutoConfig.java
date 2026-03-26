@@ -19,18 +19,12 @@
 
 package me.shedaniel.autoconfig;
 
-import dev.architectury.injectables.annotations.PlatformOnly;
 import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.autoconfig.serializer.ConfigSerializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screens.Screen;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * @see AutoConfigClient
@@ -74,19 +68,5 @@ public class AutoConfig {
         } else {
             throw new RuntimeException(String.format("Config '%s' has not been registered", configClass));
         }
-    }
-    
-    @Environment(EnvType.CLIENT)
-    @PlatformOnly(PlatformOnly.FABRIC)
-    @Deprecated(forRemoval = true)
-    public static <T extends ConfigData> GuiRegistry getGuiRegistry(Class<T> configClass) {
-        return AutoConfigClient.getGuiRegistry(configClass);
-    }
-    
-    @Environment(EnvType.CLIENT)
-    @PlatformOnly(PlatformOnly.FABRIC)
-    @Deprecated(forRemoval = true)
-    public static <T extends ConfigData> Supplier<Screen> getConfigScreen(Class<T> configClass, Screen parent) {
-        return AutoConfigClient.getConfigScreen(configClass, parent);
     }
 }

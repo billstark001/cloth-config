@@ -177,12 +177,14 @@ public class DropdownBoxEntry<T> extends TooltipListEntry<T> {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         boolean expanded = getMorePossibleHeight() >= 0;
+        boolean clickedSelection = expanded && (selectionElement.bounds.contains(event.x(), event.y())
+                || selectionElement.menu.children().stream().anyMatch(cell -> cell.isMouseOver(event.x(), event.y())));
         if (expanded && !selectionElement.isMouseOver(event.x(), event.y())) {
             closeMenu();
         }
 
         boolean handled = super.mouseClicked(event, doubleClick);
-        if (expanded && handled) {
+        if (handled && clickedSelection) {
             closeMenu();
         }
         return handled;
